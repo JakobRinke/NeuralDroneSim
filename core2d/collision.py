@@ -23,7 +23,7 @@ def spheres_collide(s1, s2):
     return (s1.pos-s2.pos).length() <= s1.param2 + s2.param2
 
 def sphere_collide_rect(s, r):
-    v = s.pos-r.pos
+    v = r.pos-s.pos
     v2 = s.pos + v.normalize() * min(v.length(), s.param2)
     return r.in_bounds(v2)
 
