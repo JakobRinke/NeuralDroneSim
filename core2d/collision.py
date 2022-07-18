@@ -1,5 +1,5 @@
 import math
-import physics2d
+import core2d
 
 def colldide(o1, o2):
     if o1.type == "rect" and o2.type == "rect":
@@ -76,17 +76,17 @@ def raycast_rect(rect, start, dir):
     topright = rect.pos + rect.param2 / 2
 
     l = min(raycast_line(bottomleft,
-                         physics2d.Vector2(rect.param2.x, 0),
+                         core2d.Vector2(rect.param2.x, 0),
                          start, dir), math.inf)
     l = min(raycast_line(bottomleft,
-                         physics2d.Vector2(0, rect.param2.y),
+                         core2d.Vector2(0, rect.param2.y),
                          start, dir), l)
     l = min(raycast_line(topright,
-                         -physics2d.Vector2(rect.param2.x, 0),
+                         -core2d.Vector2(rect.param2.x, 0),
                          start, dir), l)
 
     l = min(raycast_line(topright,
-                         -physics2d.Vector2(0, rect.param2.y),
+                         -core2d.Vector2(0, rect.param2.y),
                          start, dir), l)
     return l
 

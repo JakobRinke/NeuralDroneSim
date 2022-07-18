@@ -61,8 +61,15 @@ class Rect (Shape2):
         self.pos = pos
         self.param2 = dim
 
+    def in_bounds(self, point):
+        return (self.pos.x-self.param2.x/2<=point.x) and (self.pos.x+self.param2.x/2>=point.x) \
+            and (self.pos.y-self.param2.y/2<=point.y) and (self.pos.y+self.param2.y/2>=point.y)
+
 class Circle (Shape2):
     def __init__(self, pos, dim):
         self.type = "circle"
         self.pos = pos
         self.param2 = dim
+
+    def in_bounds(self, point):
+        return (self.pos - point).length() <= self.param2
