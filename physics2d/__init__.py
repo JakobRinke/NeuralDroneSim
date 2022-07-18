@@ -31,11 +31,7 @@ class Vector2:
         return Vector2(self.x*other, self.y*other)
 
     def __truediv__(self, other):
-        return Vector2(self.x/other, self.y/other)
-
-    def __rtruediv__(self, other):
-        return Vector2(other/self.x, other/self.y)
-
+        return self.__mul__(1.0/other)
     def __str__(self):
         return f"{self.x}|{self.y}"
 
