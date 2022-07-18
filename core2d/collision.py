@@ -27,8 +27,6 @@ def sphere_collide_rect(s, r):
     v2 = s.pos + v.normalize() * min(v.length(), s.param2)
     return r.in_bounds(v2)
 
-
-
 def raycast_sphere(cyc, start, dir):
     if cyc.in_bounds(start):
         return 0
@@ -47,8 +45,6 @@ def raycast_sphere(cyc, start, dir):
             return l
     except:
         return math.inf
-
-
 
 def raycast_line(LineStart, LineDir, start, dir):
     dir = dir.normalize()

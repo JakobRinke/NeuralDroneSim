@@ -11,7 +11,16 @@ def main():
     #rect = PhysicalBody(Rect(Vector2(100,100), Vector2(50, 50)))
     #core2d.graphics.physics_world.append(rect)
     circle = PhysicalBody(Circle(Vector2(0,0), 100))
+    core2d.graphics.physics_world.append(circle)
+    
+    rect = PhysicalBody(Rect(Vector2(100,100),Vector2(50,100)))
+    core2d.graphics.physics_world.append(rect)
+    
+    c = col.colldide(circle, rect)    
+    print(c)
+    core2d.graphics.update()    
 
+'''
     v_start = Vector2(0, 200)
     for i in range(-5, 5):
         v_dir = Vector2(i/7, -1)
@@ -36,9 +45,8 @@ def main():
         ln = col.raycast_sphere(circle, v_start, v_dir)
         core2d.graphics.raycasts.append((v_start, v_dir, ln))
 
-    core2d.graphics.update()
-
-
+    
+'''
 
 if __name__ == '__main__':
     main()
