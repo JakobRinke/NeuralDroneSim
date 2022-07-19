@@ -8,6 +8,10 @@ class PhysicalBody(core2d.Shape2):
         self.velocity = core2d.Vector2(0, 0)
         self.color = color
 
+    def move(self, direction):
+        self.pos.x += direction.x
+        self.pos.y += direction.y
+
     def proccessVelocity(self, time):
         self.pos += time*self.velocity
 
