@@ -27,13 +27,13 @@ def sphere_collide_rect(s, r):
     l2 = r.pos + r.param2 / 2
     if r.in_bounds(s.pos):
         return True
-    if raycast_sphere(s, l1, core2d.Vector2(1, 0)):
+    if 0 <= raycast_sphere(s, l1, core2d.Vector2(1, 0)) <= r.param2.x:
         return True
-    if raycast_sphere(s, l1, core2d.Vector2(0, 1)):
+    if 0 <= raycast_sphere(s, l1, core2d.Vector2(0, 1)) <= r.param2.y:
         return True
-    if raycast_sphere(s, l2, core2d.Vector2(-1, 0)):
+    if 0 <= raycast_sphere(s, l2, core2d.Vector2(-1, 0)) <= r.param2.x:
         return True
-    if raycast_sphere(s, l2, core2d.Vector2(0, -1)):
+    if 0 <= raycast_sphere(s, l2, core2d.Vector2(0, -1)) <= r.param2.y:
         return True
     return False
 
