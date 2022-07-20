@@ -26,29 +26,43 @@ def main():
     rect = PhysicalBody(Rect(Vector2(100,100),Vector2(50,100)))
     core2d.graphics.physics_world.append(rect)
     core2d.graphics.update()
+    print(col.colldide(rect, circle))
     time.sleep(sleepFine)
+
     PhysicalBody.move(rect,Vector2(50,30))
     core2d.graphics.update()
+    print(col.colldide(rect, circle))
     time.sleep(sleepFine)
+
     PhysicalBody.move(circle,Vector2(-20,-20))
     core2d.graphics.update()
+    print(col.colldide(rect, circle))
     time.sleep(sleepFine)
+
     core2d.graphics.physics_world.append((bar))
     time.sleep(sleepFine)
     core2d.graphics.update()
     core2d.graphics.physics_world.append((bar2))
     core2d.graphics.update()
+    print(col.colldide(bar, circle))
+    print(col.colldide(bar2, circle))
     time.sleep(sleepFine)
+
     PhysicalBody.move(bar,Vector2(0,100))
     core2d.graphics.update()
+    print(col.colldide(bar, circle))
     time.sleep(sleepFine)
+
     PhysicalBody.move(bar2, Vector2(0,-100))
     core2d.graphics.update()
+    print(col.colldide(bar2, circle))
     time.sleep(sleepFine)
+
     PhysicalBody.move(circle, Vector2(20,20))
     core2d.graphics.update()
+    print(col.colldide(bar, circle))
+    print(col.colldide(bar2, circle))
     time.sleep(5)
-
 
     print("-----Finished-----")
     sys.exit(0)
