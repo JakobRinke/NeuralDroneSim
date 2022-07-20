@@ -20,14 +20,13 @@ class PhysicalBody(core2d.Shape2):
         while(breakDown == False):
 
             #obverves collisions
-            u = 0
-            while(u < len(graphics.physics_world)):
-                if(collision.colldide(graphics.physics_world[u],self) == True):
-                    if(self != graphics.physics_world[u]):
+            for Object in graphics.physics_world:
+                if(collision.colldide(Object,self) == True):
+                    if(self != Object):
                         print("Game Over: Objects collided in coordinate (" + str(self.pos.x)+"|"+str(self.pos.y)+")")
                         time.sleep(5)
                         sys.exit()
-                u = u+1
+
             breakDown = True
             if(direction.x < self.pos.x):
                 self.pos.x = self.pos.x - 1
