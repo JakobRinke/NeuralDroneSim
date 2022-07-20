@@ -1,5 +1,7 @@
 import core2d
-
+from trainerSettings import TrainerSettings
+from core2d import graphics
+import time
 
 class PhysicalBody(core2d.Shape2):
 
@@ -9,8 +11,31 @@ class PhysicalBody(core2d.Shape2):
         self.color = color
 
     def move(self, direction):
-        self.pos.x += direction.x
-        self.pos.y += direction.y
+        breakDown = False
+        while(breakDown == False):
+            breakDown = True
+            if(direction.x < self.pos.x):
+                self.pos.x = self.pos.x - TrainerSettings.OBJECT_VEL
+                breakDown = False
+            elif(direction.x > self.pos.x):
+                self.pos.x = self.pos.x + TrainerSettings.OBJECT_VEL
+                breakDown = False
+            if(direction.y < self.pos.y):
+                self.pos.y = self.pos.y - TrainerSettings.OBJECT_VEL
+                breakDown = False
+            elif(direction.y > self.pos.y):
+                self.pos.y = self.pos.y + TrainerSettings.OBJECT_VEL
+                breakDown = False
+            else:
+                breakDown = True
+            core2d.graphics.update()
+            print("------------------")
+            print("| position x :" + str(self.pos.x)+ "|")
+            print("| position y : " + str(self.pos.y)+"|")
+            print("------------------")
+            time.sleep(1)
+
+
 
     def proccessVelocity(self, time):
         self.pos += time*self.velocity
