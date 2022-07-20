@@ -66,3 +66,6 @@ class PhysicalBody(core2d.Shape2):
 
     def evt_oncollision(self):
         pass
+
+def physicsProcess(time,objects):
+    pass
