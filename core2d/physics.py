@@ -8,10 +8,11 @@ from core2d import collision
 
 class PhysicalBody(core2d.Shape2):
 
-    def __init__(self, Shape, color=(0, 0, 0)):
+    def __init__(self, Shape, color=(0, 0, 0), evt_oncol=lambda:None):
         super().__init__(Shape.pos, Shape.param2, Shape.type)
         self.velocity = core2d.Vector2(0, 0)
         self.color = color
+        self.evt_oncollision=evt_oncol
 
     def move(self, direction):
         breakDown = False
