@@ -23,9 +23,19 @@ def spheres_collide(s1, s2):
     return (s1.pos-s2.pos).length() <= s1.param2 + s2.param2
 
 def sphere_collide_rect(s, r):
-    v = r.pos-s.pos
-    v2 = s.pos + v.normalize() * min(v.length(), s.param2)
-    return r.in_bounds(v2)
+    l1 = r.pos - r.param2 / 2
+    l2 = r.pos + r.param2 / 2
+    if r.in_bounds(s.pos):
+        return True
+    if raycast_sphere(s, l1, core2d.Vector2(1, 0)):
+        return True
+    if raycast_sphere(s, l1, core2d.Vector2(0, 1)):
+        return True
+    if raycast_sphere(s, l2, core2d.Vector2(-1, 0)):
+        return True
+    if raycast_sphere(s, l2, core2d.Vector2(0, -1)):
+        return True
+    return False
 
 def raycast_sphere(cyc, start, dir):
     if cyc.in_bounds(start):
