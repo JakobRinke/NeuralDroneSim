@@ -16,11 +16,15 @@ def main():
 
     a = TrainerSettings.DRONE_SIZE
     drone = PhysicalBody(Circle(Vector2(0,0),a))
+    wall = PhysicalBody(Rect(Vector2(200, -230),Vector2(2,500)))
+    wall2 = PhysicalBody(Rect(Vector2(100,-170),Vector2(200,2)))
+    core2d.graphics.physics_world.append(wall)
+    core2d.graphics.physics_world.append(wall2)
     core2d.graphics.physics_world.append(drone)
     core2d.graphics.update()
-    time.sleep(5)
-    PhysicalBody.move(drone,Vector2(-120,200))
-    core2d.graphics.update()
+    time.sleep(2)
+
+    PhysicalBody.move(drone, Vector2(250,-250))
     time.sleep(5)
 
     '''

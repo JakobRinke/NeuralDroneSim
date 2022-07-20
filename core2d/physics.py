@@ -1,7 +1,10 @@
+import sys
+
 import core2d
 from trainerSettings import TrainerSettings
 from core2d import graphics
 import time
+from core2d import collision
 
 class PhysicalBody(core2d.Shape2):
 
@@ -12,28 +15,42 @@ class PhysicalBody(core2d.Shape2):
 
     def move(self, direction):
         breakDown = False
+        sleepFine = 1/TrainerSettings.OBJECT_VEL
+        i = 0
         while(breakDown == False):
+
+            #obverves collisions
+            u = 0
+            while(u < len(graphics.physics_world)):
+                if(collision.colldide(graphics.physics_world[u],self) == True):
+                    if(self != graphics.physics_world[u]):
+                        print("Game Over: Objects collided in coordinate (" + str(self.pos.x)+"|"+str(self.pos.y)+")")
+                        time.sleep(5)
+                        sys.exit()
+                u = u+1
             breakDown = True
             if(direction.x < self.pos.x):
-                self.pos.x = self.pos.x - TrainerSettings.OBJECT_VEL
+                self.pos.x = self.pos.x - 1
                 breakDown = False
             elif(direction.x > self.pos.x):
-                self.pos.x = self.pos.x + TrainerSettings.OBJECT_VEL
+                self.pos.x = self.pos.x + 1
                 breakDown = False
             if(direction.y < self.pos.y):
-                self.pos.y = self.pos.y - TrainerSettings.OBJECT_VEL
+                self.pos.y = self.pos.y - 1
                 breakDown = False
             elif(direction.y > self.pos.y):
-                self.pos.y = self.pos.y + TrainerSettings.OBJECT_VEL
+                self.pos.y = self.pos.y + 1
                 breakDown = False
             else:
                 breakDown = True
             core2d.graphics.update()
-            print("------------------")
-            print("| position x :" + str(self.pos.x)+ "|")
-            print("| position y : " + str(self.pos.y)+"|")
-            print("------------------")
-            time.sleep(1)
+            i = i+1
+            if(i%10 == 0):
+                print("------------------")
+                print("| position x :" + str(self.pos.x)+ "|")
+                print("| position y : " + str(self.pos.y)+"|")
+                print("------------------")
+            time.sleep(sleepFine)
 
 
 
