@@ -30,27 +30,19 @@ def update():
 
     i = 0
     crashed = False
-    while i < 1:
-        i = i+1
-        #for event in pygame.event.get():
-            #if event.type == pygame.QUIT:
-            #   crashed = True
 
-        window.fill((255, 255, 255))
+    window.fill((255, 255, 255))
 
-        for PhysObj in physics_world:
-            PhysObj.draw(pygame, window, width, height)
+    for PhysObj in physics_world:
+        PhysObj.draw(pygame, window, width, height)
 
-        clock.tick(60)
+    clock.tick(60)
 
-        centerVec = core2d.Vector2(width/2, height/2)
-        for raycast in raycasts:
-            cast = (raycast[0].inverse_Y()+centerVec)
-            pygame.draw.line(window, raycolor, cast.to_tuple(), (cast+raycast[1].normalize().inverse_Y()*raycast[2]).to_tuple())
+    centerVec = core2d.Vector2(width/2, height/2)
+    for raycast in raycasts:
+        cast = (raycast[0].inverse_Y()+centerVec)
+        pygame.draw.line(window, raycolor, cast.to_tuple(), (cast+raycast[1].normalize().inverse_Y()*raycast[2]).to_tuple())
 
-        pygame.display.update()
+    pygame.display.update()
 
-        clock.tick(60)
-    #pygame.quit()
-    #quit()
-    #sys.exit(0)
+    clock.tick(60)
