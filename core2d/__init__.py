@@ -12,7 +12,9 @@ class Vector2:
             self.y = y
 
     def normalize(self):
-        k = math.sqrt(1/max(self.x*self.x+self.y*self.y,0.00000001))
+        if self.length() == 0:
+            return Vector2(0, 0)
+        k = math.sqrt(1/(self.x*self.x+self.y*self.y))
         return self * k
 
     def to_tuple(self):
@@ -23,6 +25,12 @@ class Vector2:
 
     def inverse_Y(self):
         return Vector2(self.x, -self.y)
+
+    def inverse_(self):
+        return Vector2(-self.x, self.y)
+
+    def as_rad_tuple(self):
+        return (self.length(), math.asin(self.normalize().x))
 
     def __add__(self, other):
         return Vector2(self.x + other.x, self.y + other.y)
