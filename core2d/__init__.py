@@ -38,10 +38,15 @@ class Vector2:
 
     def __truediv__(self, other):
         return self.__mul__(1.0/other)
+
     def __str__(self):
         return f"{self.x}|{self.y}"
 
+    def __abs__(self):
+        return Vector2(abs(self.x), abs(self.y))
 
+    def __pow__(self, power, modulo=None):
+        return Vector2(self.x**power, self.y**power)
 
 class Shape2:
     _shapetypes = ["circle", "rect"]
