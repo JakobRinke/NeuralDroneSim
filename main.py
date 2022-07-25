@@ -14,10 +14,11 @@ def main():
     #rect = PhysicalBody(Rect(Vector2(100,100), Vector2(50, 50)))
     #core2d.graphics.physics_world.append(rect)
 
-    drone1 = PhysicalBody(Circle(Vector2(-240,240), 10, Vector2(-240,240)))
-    drone2 = PhysicalBody(Circle(core2d.Vector2(-100,-100),10,core2d.Vector2(240,-240)))
+    drone1 = PhysicalBody(Circle(Vector2(-240,240), 10))
+    drone2 = PhysicalBody(Circle(core2d.Vector2(-100,-100),10))
+    drone1.target = core2d.Vector2(0,100)
+    drone2.target = core2d.Vector2(-50,200)
     drone1.velocity = Vector2(1,1)
-    drone1.target
     drone2.velocity = Vector2(2,2)
     core2d.graphics.physics_world.append(drone1)
     core2d.graphics.physics_world.append(drone2)
@@ -25,7 +26,7 @@ def main():
     time.sleep(2)
     core2d.graphics.update()
 
-    physicsProcess(core2d.graphics.physics_world, core2d.Vector2(240,-230))
+    physicsProcess(core2d.graphics.physics_world)
     time.sleep(5)
     '''
     PhysicalBody.move(a,b) = function to move objects

@@ -10,6 +10,7 @@ class PhysicalBody(core2d.Shape2):
 
     def __init__(self, Shape, color=(0, 0, 0), evt_oncol=lambda:None):
         super().__init__(Shape.pos, Shape.param2, Shape.type)
+        self.target = core2d.Vector2(240,-240)
         self.velocity = core2d.Vector2(0, 0)
         self.color = color
         self.evt_oncollision=evt_oncol
@@ -90,7 +91,7 @@ class PhysicalBody(core2d.Shape2):
     def evt_oncollision(self):
         pass
 
-def physicsProcess(objects, target):
+def physicsProcess(objects):
 
     while(True):
         for b in objects:
