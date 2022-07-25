@@ -12,7 +12,9 @@ class Vector2:
             self.y = y
 
     def normalize(self):
-        k = math.sqrt(1/max(self.x*self.x+self.y*self.y,0.00000001))
+        if self.length() == 0:
+            return Vector2(0, 0)
+        k = math.sqrt(1/(self.x*self.x+self.y*self.y))
         return self * k
 
     def to_tuple(self):
@@ -23,6 +25,12 @@ class Vector2:
 
     def inverse_Y(self):
         return Vector2(self.x, -self.y)
+
+    def inverse_(self):
+        return Vector2(-self.x, self.y)
+
+    def as_rad_tuple(self):
+        return (self.length(), math.asin(self.normalize().x))
 
     def __add__(self, other):
         return Vector2(self.x + other.x, self.y + other.y)
@@ -38,10 +46,15 @@ class Vector2:
 
     def __truediv__(self, other):
         return self.__mul__(1.0/other)
+
     def __str__(self):
         return f"{self.x}|{self.y}"
 
+    def __abs__(self):
+        return Vector2(abs(self.x), abs(self.y))
 
+    def __pow__(self, power, modulo=None):
+        return Vector2(self.x**power, self.y**power)
 
 class Shape2:
     _shapetypes = ["circle", "rect"]

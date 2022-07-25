@@ -22,20 +22,22 @@ def rects_collide(r1, r2):
 def spheres_collide(s1, s2):
     return (s1.pos-s2.pos).length() <= s1.param2 + s2.param2
 
-def sphere_collide_rect(s, r):
-    l1 = r.pos - r.param2 / 2
-    l2 = r.pos + r.param2 / 2
-    if r.in_bounds(s.pos):
+def sphere_collide_rect(circle, rect):
+    circleDistance = abs(circle.pos - rect.pos)
+    halfSize = rect.param2/2
+    if (circleDistance.x > (halfSize.x + circle.param2)):
+        return False
+    if circleDistance.y > (halfSize.y + circle.param2):
+        return False
+
+    if circleDistance.x <= (halfSize.x):
         return True
-    if 0 <= raycast_sphere(s, l1, core2d.Vector2(1, 0)) <= r.param2.x:
+    if circleDistance.y <= (halfSize.y):
         return True
-    if 0 <= raycast_sphere(s, l1, core2d.Vector2(0, 1)) <= r.param2.y:
-        return True
-    if 0 <= raycast_sphere(s, l2, core2d.Vector2(-1, 0)) <= r.param2.x:
-        return True
-    if 0 <= raycast_sphere(s, l2, core2d.Vector2(0, -1)) <= r.param2.y:
-        return True
-    return False
+    cornerDistance_sq = (circleDistance.x - halfSize.x)**2 + \
+                        (circleDistance.y - halfSize.y)**2
+    return (cornerDistance_sq <= (circle.param2**2))
+
 
 def raycast_sphere(cyc, start, dir):
     if cyc.in_bounds(start):
