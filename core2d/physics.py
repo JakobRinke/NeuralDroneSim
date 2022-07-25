@@ -14,7 +14,7 @@ class PhysicalBody(core2d.Shape2):
         self.color = color
         self.evt_oncollision=evt_oncol
 
-    def move(self, direction):
+    def moveAsTest(self, direction):
         breakDown = False
         sleepFine = 1/TrainerSettings.OBJECT_VEL
         i = 0
@@ -54,8 +54,30 @@ class PhysicalBody(core2d.Shape2):
 
 
 
-    def proccessVelocity(self, time):
-        self.pos += time*self.velocity
+    def proccessVelocity(self, t):
+        self.pos += t*self.velocity
+
+    def move(objects):
+        breakUpCounter = 0
+        for i in objects:
+            if(i.pos.x < i.target.x):
+                i.pos.x = i.pos.x + i.velocity.x
+                if(i.pos.y < i.target.y):
+                    i.pos.y = i.pos.y + i.velocity.y
+                if (i.pos.y > i.target.y):
+                    i.pos.y = i.pos.y - i.velocity.y
+            elif(i.pos.x > i.target.x):
+                i.pos.x = i.pos.x - i.velocity.x
+                if (i.pos.y < i.target.y):
+                    i.pos.y = i.pos.y + i.velocity.y
+                if(i.pos.y > i.target.y):
+                    i.pos.y = i.pos.y - i.velocity.y
+            else:
+                breakUpCounter = breakUpCounter +1
+
+        if(breakUpCounter == len(objects)):
+            return True
+        core2d.graphics.update()
 
     def draw(self, pygame, window, width, height):
         npos = (width / 2 + self.pos.x, height / 2 - self.pos.y)
@@ -68,5 +90,23 @@ class PhysicalBody(core2d.Shape2):
     def evt_oncollision(self):
         pass
 
-def physicsProcess(time,objects):
-    pass
+def physicsProcess(objects, target):
+
+    while(True):
+        for b in objects:
+            if(b.pos.x == b.target.x and b.pos.y == b.target.y):
+                b.target = core2d.Vector2(0,240)
+        if(PhysicalBody.move(objects) == True):
+            break
+        for a in objects:
+            observeCollisions(a, objects)
+
+def observeCollisions(self, objects):
+    # obverves collisions
+    for i in objects:
+        if(collision.colldide(self, i )== True):
+            if(self != i):
+                print("Game Over: Objects collided in coordinate (" + str(self.pos.x) + "|" + str(self.pos.y) + ")")
+                time.sleep(5)
+                sys.exit()
+
