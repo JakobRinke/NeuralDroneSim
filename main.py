@@ -26,7 +26,13 @@ def main():
     time.sleep(2)
     core2d.graphics.update()
 
-    physicsProcess(core2d.graphics.physics_world)
+    time_scale = 1.0
+    t = time.time()
+    for i in range(10000):
+        physicsProcessTime((time.time()-t)*time_scale)
+        t = time.time()
+
+
     time.sleep(5)
     '''
     PhysicalBody.move(a,b) = function to move objects
