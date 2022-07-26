@@ -26,9 +26,10 @@ def main():
     time.sleep(2)
     core2d.graphics.update()
 
-    time_scale = 1000.0
+    time_scale = 1.0
     t = time.time()
     for i in range(10000):
+        time.sleep(1)
         physicsProcessTime(core2d.graphics.physics_world,(time.time()-t)*time_scale)
         t = time.time()
 
