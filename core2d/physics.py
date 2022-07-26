@@ -55,7 +55,7 @@ class PhysicalBody(core2d.Shape2):
 
 
 
-    def proccessVelocity(self, t):
+    def processVelocity(self, t):
         self.pos += t*self.velocity
 
     def move(objects):
@@ -88,26 +88,27 @@ class PhysicalBody(core2d.Shape2):
             pygame.draw.rect(window, self.color, (npos[0]-self.param2.x/2, npos[1]-self.param2.y/2,
                                              self.param2.x, self.param2.y))
 
-    def evt_oncollision(self):
+    def evt_oncollision(self, other):
         pass
 
-def physicsProcess(objects):
+def physicsProcessTarget(objects):
+    ret = False
+    if(PhysicalBody.move(objects) == True):
+        ret = True
+    for a in objects:
+        observeCollisions(a, objects)
+    return ret
 
-    while(True):
-        for b in objects:
-            if(b.pos.x == b.target.x and b.pos.y == b.target.y):
-                b.target = core2d.Vector2(0,240)
-        if(PhysicalBody.move(objects) == True):
-            break
-        for a in objects:
-            observeCollisions(a, objects)
+def physicsProcessTime(objects, time):
+    for a in objects:
+        a.processVelocity(time)
+    for a in objects:
+        observeCollisions(a, objects)
 
-def observeCollisions(self, objects):
+
+def observeCollisions(me, objects):
     # obverves collisions
     for i in objects:
-        if(collision.colldide(self, i )== True):
-            if(self != i):
-                print("Game Over: Objects collided in coordinate (" + str(self.pos.x) + "|" + str(self.pos.y) + ")")
-                time.sleep(5)
-                sys.exit()
-
+        if collision.colldide(me, i):
+            if(me != i):
+                me.evt_collision(other)
