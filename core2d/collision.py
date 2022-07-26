@@ -23,6 +23,7 @@ def spheres_collide(s1, s2):
     return (s1.pos-s2.pos).length() <= s1.param2 + s2.param2
 
 def sphere_collide_rect(circle, rect):
+
     circleDistance = abs(circle.pos - rect.pos)
     halfSize = rect.param2/2
     if (circleDistance.x > (halfSize.x + circle.param2)):
@@ -97,6 +98,7 @@ def raycast_rect(rect, start, dir):
                          -core2d.Vector2(0, rect.param2.y),
                          start, dir), l)
     return l
+
 
 def raycast_world(world, me, dir):
     pass

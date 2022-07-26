@@ -14,7 +14,7 @@ class Drone(core2d.physics.PhysicalBody):
                          color=(255, 0, 0))
         self.fieldX = fieldX
         self.fieldY = fieldY
-        self.Swarm = []
+        self.Swarm = Swarm
 
     def getAliveNeighbourCount(self):
         o = -1
@@ -31,14 +31,11 @@ class Drone(core2d.physics.PhysicalBody):
                                 params[1]*math.pi,
                                 rad=True)
 
-
-
     ####### Parameters that a given to the Neural Network  ###########
 
     # Parameters that the Neighbours also get
     def get_export_parameters(self, relative):
-        dst = (self.pos - relative).as_rad_tuple()
-        return (*dst, *self.velocity.as_rad_tuple())
+        return (self.pos - relative).as_rad_tuple()
 
     # Parameters that only the Drone itself has
     def get_inner_parameters(self, objective):
