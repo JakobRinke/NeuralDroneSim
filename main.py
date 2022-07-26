@@ -18,18 +18,18 @@ def main():
     drone2 = PhysicalBody(Circle(core2d.Vector2(-100,-100),10))
     drone1.target = core2d.Vector2(0,100)
     drone2.target = core2d.Vector2(-50,200)
-    drone1.velocity = Vector2(1,1)
-    drone2.velocity = Vector2(2,2)
+    drone1.velocity = Vector2(30,-10)
+    drone2.velocity = Vector2(20,20)
     core2d.graphics.physics_world.append(drone1)
     core2d.graphics.physics_world.append(drone2)
 
     time.sleep(2)
     core2d.graphics.update()
 
-    time_scale = 1.0
+    time_scale = 1000.0
     t = time.time()
     for i in range(10000):
-        physicsProcessTime((time.time()-t)*time_scale)
+        physicsProcessTime(core2d.graphics.physics_world,(time.time()-t)*time_scale)
         t = time.time()
 
 

@@ -56,7 +56,7 @@ class PhysicalBody(core2d.Shape2):
 
 
     def processVelocity(self, t):
-        self.pos += t*self.velocity
+        self.pos += self.velocity*t
 
     def move(objects):
         breakUpCounter = 0
@@ -104,6 +104,7 @@ def physicsProcessTime(objects, time):
         a.processVelocity(time)
     for a in objects:
         observeCollisions(a, objects)
+    core2d.graphics.update()
 
 
 def observeCollisions(me, objects):
