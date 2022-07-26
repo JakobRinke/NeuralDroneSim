@@ -98,3 +98,5 @@ def raycast_rect(rect, start, dir):
                          start, dir), l)
     return l
 
+def raycast_world(world, me=None):
+    pass
