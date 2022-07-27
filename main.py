@@ -9,7 +9,7 @@ import pygame
 import sys
 
 def main():
-    core2d.graphics.init(500, 500, "PhysTest")
+    core2d.graphics.init(TrainerSettings.WORLD_SIZE, TrainerSettings.WORLD_SIZE, "PhysTest")
 
     #rect = PhysicalBody(Rect(Vector2(100,100), Vector2(50, 50)))
     #core2d.graphics.physics_world.append(rect)

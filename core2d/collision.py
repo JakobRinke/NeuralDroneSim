@@ -1,5 +1,7 @@
 import math
 import core2d
+from trainerSettings import TrainerSettings
+
 
 def colldide(o1, o2):
     if o1.type == "rect" and o2.type == "rect":
@@ -40,8 +42,8 @@ def sphere_collide_rect(circle, rect):
     return (cornerDistance_sq <= (circle.param2**2))
 
 
-def raycast_sphere(cyc, start, dir):
-    if cyc.in_bounds(start):
+def raycast_sphere(cyc, start, dir, in_bounds_break=True):
+    if in_bounds_break and cyc.in_bounds(start) :
         return 0
     dir = dir.normalize()
     dx = start.x - cyc.pos.x
@@ -80,10 +82,11 @@ def raycast_line(LineStart, LineDir, start, dir):
     return t
 
 
-def raycast_rect(rect, start, dir):
+def raycast_rect(rect, start, dir, in_bounds_break=True):
+    if in_bounds_break and rect.in_bounds(start):
+        return 0
     bottomleft = rect.pos - rect.param2 / 2
     topright = rect.pos + rect.param2 / 2
-
     l = min(raycast_line(bottomleft,
                          core2d.Vector2(rect.param2.x, 0),
                          start, dir), math.inf)
@@ -98,6 +101,12 @@ def raycast_rect(rect, start, dir):
                          -core2d.Vector2(0, rect.param2.y),
                          start, dir), l)
     return l
+
+
+World_Rect = core2d.Rect(Vector2(-TrainerSettings/2,-TrainerSettings/2),
+                         Vector2(-TrainerSettings/2,-TrainerSettings/2))
+def raycast_worldborder(start, dir):
+    return raycast_rect(World_Rect, start, dir, False)
 
 
 def raycast_world(world, me, dir):
