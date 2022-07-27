@@ -13,6 +13,12 @@ def colldide(o1, o2):
     elif o2.type == "rect" and o1.type == "circle":
         return sphere_collide_rect(o1, o2)
 
+def out_worldborder(object):
+    if object.type == "rect":
+        return rect_out_worldborder(object)
+    elif object.type == "circle":
+        return circle_out_worldborder(object)
+
 def rects_collide(r1, r2):
     l1 = r1.pos - r1.param2/2
     l2 = r2.pos - r2.param2/2
@@ -40,6 +46,20 @@ def sphere_collide_rect(circle, rect):
     cornerDistance_sq = (circleDistance.x - halfSize.x)**2 + \
                         (circleDistance.y - halfSize.y)**2
     return (cornerDistance_sq <= (circle.param2**2))
+
+
+def rect_out_worldborder(rect):
+    return  rect.pos.x-rect.param2.x/2 < -TrainerSettings.WORLD_SIZE/2 or \
+            rect.pos.y-rect.param2.y/2 < -TrainerSettings.WORLD_SIZE/2 or \
+            rect.pos.x+rect.param2.x/2 > TrainerSettings.WORLD_SIZE/2 or \
+            rect.pos.y+rect.param2.y/2 > TrainerSettings.WORLD_SIZE/2
+
+
+def circle_out_worldborder(circle):
+    return circle.pos.x - circle.param2 / 2 < -TrainerSettings.WORLD_SIZE / 2 or \
+           circle.pos.y - circle.param2 / 2 < -TrainerSettings.WORLD_SIZE / 2 or \
+           circle.pos.x + circle.param2 / 2 > TrainerSettings.WORLD_SIZE / 2 or \
+           circle.pos.y + circle.param2 / 2 > TrainerSettings.WORLD_SIZE / 2
 
 
 def raycast_sphere(cyc, start, dir, in_bounds_break=True):
@@ -103,8 +123,8 @@ def raycast_rect(rect, start, dir, in_bounds_break=True):
     return l
 
 
-World_Rect = core2d.Rect(Vector2(-TrainerSettings/2,-TrainerSettings/2),
-                         Vector2(-TrainerSettings/2,-TrainerSettings/2))
+World_Rect = core2d.Rect(core2d.Vector2(-TrainerSettings/2,-TrainerSettings/2),
+                         core2d.Vector2(TrainerSettings/2,TrainerSettings/2))
 def raycast_worldborder(start, dir):
     return raycast_rect(World_Rect, start, dir, False)
 

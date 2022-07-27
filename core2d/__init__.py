@@ -56,6 +56,13 @@ class Vector2:
     def __pow__(self, power, modulo=None):
         return Vector2(self.x**power, self.y**power)
 
+
+Vector2_zero = Vector2(0, 0)
+Vector2_one = Vector2(1, 1)
+Vector2_right = Vector2(0, 1)
+Vector2_up = Vector2(1, 0)
+
+
 class Shape2:
     _shapetypes = ["circle", "rect"]
 
