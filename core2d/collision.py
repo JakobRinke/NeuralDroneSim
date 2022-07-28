@@ -123,8 +123,8 @@ def raycast_rect(rect, start, dir, in_bounds_break=True):
     return l
 
 
-World_Rect = core2d.Rect(core2d.Vector2(-TrainerSettings/2,-TrainerSettings/2),
-                         core2d.Vector2(TrainerSettings/2,TrainerSettings/2))
+World_Rect = core2d.Rect(core2d.Vector2(-TrainerSettings.WORLD_SIZE/2,-TrainerSettings.WORLD_SIZE/2),
+                         core2d.Vector2(TrainerSettings.WORLD_SIZE/2,TrainerSettings.WORLD_SIZE/2))
 def raycast_worldborder(start, dir):
     return raycast_rect(World_Rect, start, dir, False)
 

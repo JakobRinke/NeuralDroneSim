@@ -14,7 +14,7 @@ def main():
     #rect = PhysicalBody(Rect(Vector2(100,100), Vector2(50, 50)))
     #core2d.graphics.physics_world.append(rect)
 
-    drone1 = PhysicalBody(Circle(Vector2(-240,240), 10))
+    drone1 = PhysicalBody(Circle(Vector2(-240,260), 10))
     drone2 = PhysicalBody(Circle(core2d.Vector2(-100,-100),10))
     drone1.target = core2d.Vector2(0,100)
     drone2.target = core2d.Vector2(-50,200)

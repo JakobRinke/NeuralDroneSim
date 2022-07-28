@@ -87,9 +87,11 @@ class PhysicalBody(core2d.Shape2):
             pygame.draw.rect(window, self.color, (npos[0]-self.param2.x/2, npos[1]-self.param2.y/2,
                                              self.param2.x, self.param2.y))
 
-    def evt_oncollision(self, other):
+    def evt_collision(self, other):
         pass
 
+    def evt_world_border(self):
+        pass
 
 def physicsProcessTarget(objects):
     ret = False
@@ -104,6 +106,8 @@ def physicsProcessTime(objects, time):
         a.processVelocity(time)
     for a in objects:
         observeCollisions(a, objects)
+        if collision.out_worldborder(a):
+            a.evt_world_border()
     core2d.graphics.update()
 
 
@@ -111,5 +115,5 @@ def observeCollisions(me, objects):
     # obverves collisions
     for i in objects:
         if collision.colldide(me, i):
-            if(me != i):
-                me.evt_collision(other)
+            if me != i:
+                me.evt_collision(i)
