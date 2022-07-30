@@ -125,7 +125,7 @@ def raycast_rect(rect, start, dir, in_bounds_break=True):
                          start, dir), l)
     return l
 
-def raycast_world(me, world):
+def raycast_world(me, world, dir):
     criticalOnes = []
     raycast = generateCoordinatesOnWay(me.pos,me.velocity)
     for b in world:
