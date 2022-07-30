@@ -1,5 +1,7 @@
 import math
 import core2d
+import copy
+from trainerSettings import TrainerSettings
 
 def colldide(o1, o2):
     if o1.type == "rect" and o2.type == "rect":
@@ -100,5 +102,38 @@ def raycast_rect(rect, start, dir):
     return l
 
 
-def raycast_world(world, me, dir):
-    pass
+def raycast_world(me, world):
+    criticalOnes = []
+    raycast = generateCoordinatesOnWay(me.pos, me.dir)
+    for b in world:
+        if me != b:
+            for p in range(len(raycast)):
+                if (raycast[p].x >= b.pos.x - TrainerSettings.DRONE_SIZE and raycast[p].x <= b.pos.x + TrainerSettings.DRONE_SIZE
+                and raycast[p].y >= b.pos.y - TrainerSettings.DRONE_SIZE and raycast[p].y <= b.pos.y + TrainerSettings.DRONE_SIZE):
+                    criticalOnes.append(raycast[p])
+                    break
+    return sort(criticalOnes)
+
+def generateCoordinatesOnWay(start, dir):
+    raycast = [TrainerSettings.MAX_RAYCAST_LEN]
+    for a in raycast:
+        a = -501
+    y = 0
+    current = copy.deepcopy(start)
+    while(y < TrainerSettings.MAX_RAYCAST_LEN):
+        current.x = current.x + dir.x
+        current.y = current.y + dir.y
+        raycast.append(current)
+        y += abs((dir.x + dir.y) / 2)
+    return raycast
+
+def sort(dir):
+    newDir = []
+    for y in range(len(dir)):
+        actual = core2d.Vector2(101,101)
+        for i in dir:
+            if ((i.x + i.y)/2 < (actual.x + actual.y)/2):
+                actual = i
+        newDir.append(actual)
+        dir.remove(i)
+    return newDir

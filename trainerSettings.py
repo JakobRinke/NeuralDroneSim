@@ -8,3 +8,6 @@ class TrainerSettings:
     DRONE_DIST = 15       # DISTANCE BETWEEN CENTER OF 2 DRONES
     MAX_RAYCAST_LEN = 100 # Maximum Length of Drone Raycast Detector
 
+    time_Waiting = 1/60
+    time_scale = 5.0
+

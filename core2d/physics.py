@@ -1,5 +1,5 @@
 import sys
-
+import time
 import core2d
 from trainerSettings import TrainerSettings
 from core2d import graphics
@@ -12,6 +12,8 @@ class PhysicalBody(core2d.Shape2):
         super().__init__(Shape.pos, Shape.param2, Shape.type)
         self.target = core2d.Vector2(240,-240)
         self.velocity = core2d.Vector2(0, 0)
+        self.dir = core2d.Vector2(1,1)
+        criticalNeighbour = core2d.Vector2(0,0)
         self.color = color
         self.evt_oncollision=evt_oncol
 
@@ -99,13 +101,18 @@ def physicsProcessTarget(objects):
         observeCollisions(a, objects)
     return ret
 
-def physicsProcessTime(objects, time):
+def physicsProcessTime(objects, t):
     for a in objects:
-        a.processVelocity(time)
+        a.processVelocity(t)
     for a in objects:
         observeCollisions(a, objects)
-    core2d.graphics.update()
 
+    for b in objects: # gives every single object the distance to his nearest neighbour
+        if b.type == "circle":
+            b.criticalNeighbour = collision.raycast_world(b,objects)[0]
+            print("next criticalNeighbour: "+str(b.criticalNeighbour))
+
+    core2d.graphics.update()
 
 def observeCollisions(me, objects):
     # obverves collisions
