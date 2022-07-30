@@ -12,8 +12,7 @@ class PhysicalBody(core2d.Shape2):
         super().__init__(Shape.pos, Shape.param2, Shape.type)
         self.target = core2d.Vector2(240,-240)
         self.velocity = core2d.Vector2(0, 0)
-        self.dir = core2d.Vector2(1,1)
-        criticalNeighbour = core2d.Vector2(0,0)
+        distanceNeighbour = core2d.Vector2(0,0)
         self.color = color
 
     def moveAsTest(self, direction):
@@ -108,18 +107,15 @@ def physicsProcessTime(objects, t):
         a.processVelocity(t)
     for a in objects:
         observeCollisions(a, objects)
-
         if collision.out_worldborder(a):
             a.evt_world_border()
-    core2d.graphics.update()
-
-    for b in objects: # gives every single object the distance to his nearest neighbour
+    for a in objects:
         try:
-            if b.type == "circle":
-                b.criticalNeighbour = collision.raycast_world(b,objects)[0]
-                print("next criticalNeighbour: "+str(b.criticalNeighbour))
+            a.distanceNeighbour = collision.raycast_world(a, objects)[0]
+            print("distance to Neighbour: " + str(a.distanceNeighbour.x) + "|" + str(a.distanceNeighbour.y))
         except IndexError:
-            break
+            a.distanceNeighbour = "NaN"
+            print("to danger to collide")
     core2d.graphics.update()
 
 def observeCollisions(me, objects):

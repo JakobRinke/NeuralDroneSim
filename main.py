@@ -15,7 +15,7 @@ def main():
     #core2d.graphics.physics_world.append(rect)
 
     drone1 = PhysicalBody(Circle(Vector2(-20,0), 10))
-    drone2 = PhysicalBody(Circle(core2d.Vector2(-40,0),10))
+    drone2 = PhysicalBody(Circle(core2d.Vector2(-119,0),10))
     drone1.velocity = Vector2(10,0)
     drone2.velocity = Vector2(10,0)
     core2d.graphics.physics_world.append(drone1)
@@ -25,17 +25,13 @@ def main():
     core2d.graphics.update()
     time_scale = TrainerSettings.time_scale
     t = time.time()
+
     for i in range(200):
         time.sleep(TrainerSettings.time_Waiting)
         physicsProcessTime(core2d.graphics.physics_world,TrainerSettings.time_Waiting*time_scale)
         t = time.time()
-
     time.sleep(5)
-    '''
-    PhysicalBody.move(a,b) = function to move objects
-    a = the object you want to move
-    b = an "Vector2" object, which adds the x and y value in it to the position of the object
-    '''
+
     print("-----Finished-----")
     sys.exit(0)
 
