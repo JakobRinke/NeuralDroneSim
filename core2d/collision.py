@@ -1,5 +1,6 @@
 import math
 import core2d
+import array
 import copy
 from trainerSettings import TrainerSettings
 
@@ -109,7 +110,6 @@ def raycast_rect(rect, start, dir, in_bounds_break=True):
         return 0
     bottomleft = rect.pos - rect.param2 / 2
     topright = rect.pos + rect.param2 / 2
-
     l = min(raycast_line(bottomleft,
                          core2d.Vector2(rect.param2.x, 0),
                          start, dir), math.inf)
@@ -125,21 +125,21 @@ def raycast_rect(rect, start, dir, in_bounds_break=True):
                          start, dir), l)
     return l
 
-
 def raycast_world(me, world):
     criticalOnes = []
     raycast = generateCoordinatesOnWay(me.pos, me.dir)
     for b in world:
         if me != b:
-            for p in range(len(raycast)):
-                if (raycast[p].x >= b.pos.x - TrainerSettings.DRONE_SIZE and raycast[p].x <= b.pos.x + TrainerSettings.DRONE_SIZE
-                and raycast[p].y >= b.pos.y - TrainerSettings.DRONE_SIZE and raycast[p].y <= b.pos.y + TrainerSettings.DRONE_SIZE):
+            for p in raycast:
+                if (p.x >= b.pos.x - TrainerSettings.DRONE_SIZE and p.x <= b.pos.x + TrainerSettings.DRONE_SIZE
+                and p.y >= b.pos.y - TrainerSettings.DRONE_SIZE and p.y <= b.pos.y + TrainerSettings.DRONE_SIZE):
+                    print("predict collapse!")
                     criticalOnes.append(raycast[p])
                     break
     return sort(criticalOnes)
 
 def generateCoordinatesOnWay(start, dir):
-    raycast = [TrainerSettings.MAX_RAYCAST_LEN]
+    raycast = []
     for a in raycast:
         a = -501
     y = 0
@@ -161,11 +161,8 @@ def sort(dir):
         newDir.append(actual)
         dir.remove(i)
     return newDir
+
 World_Rect = core2d.Rect(core2d.Vector2(-TrainerSettings.WORLD_SIZE/2,-TrainerSettings.WORLD_SIZE/2),
                          core2d.Vector2(TrainerSettings.WORLD_SIZE/2,TrainerSettings.WORLD_SIZE/2))
 def raycast_worldborder(start, dir):
     return raycast_rect(World_Rect, start, dir, False)
-
-
-def raycast_world(world, me, dir):
-    pass

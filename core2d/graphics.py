@@ -39,3 +39,4 @@ def update():
         cast = (raycast[0].inverse_Y()+centerVec)
         pygame.draw.line(window, raycolor, cast.to_tuple(), (cast+raycast[1].normalize().inverse_Y()*raycast[2]).to_tuple())
 
+    pygame.display.update()

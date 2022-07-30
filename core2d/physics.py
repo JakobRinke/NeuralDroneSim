@@ -114,10 +114,12 @@ def physicsProcessTime(objects, t):
     core2d.graphics.update()
 
     for b in objects: # gives every single object the distance to his nearest neighbour
-        if b.type == "circle":
-            b.criticalNeighbour = collision.raycast_world(b,objects)[0]
-            print("next criticalNeighbour: "+str(b.criticalNeighbour))
-
+        try:
+            if b.type == "circle":
+                b.criticalNeighbour = collision.raycast_world(b,objects)[0]
+                print("next criticalNeighbour: "+str(b.criticalNeighbour))
+        except IndexError:
+            break
     core2d.graphics.update()
 
 def observeCollisions(me, objects):

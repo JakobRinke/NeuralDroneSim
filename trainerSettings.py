@@ -13,4 +13,4 @@ class TrainerSettings:
 
     time_Waiting = 1/60
     time_scale = 5.0
-s
+
