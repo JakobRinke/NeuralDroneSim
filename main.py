@@ -10,11 +10,13 @@ import sys
 
 def main():
     core2d.graphics.init(500, 500, "PhysTest")
+    core2d.graphics.init(TrainerSettings.WORLD_SIZE, TrainerSettings.WORLD_SIZE, "PhysTest")
 
     #rect = PhysicalBody(Rect(Vector2(100,100), Vector2(50, 50)))
     #core2d.graphics.physics_world.append(rect)
 
     drone1 = PhysicalBody(Circle(Vector2(-240,240), 10))
+    drone1 = PhysicalBody(Circle(Vector2(-240,260), 10))
     drone2 = PhysicalBody(Circle(core2d.Vector2(-100,-100),10))
     drone1.velocity = Vector2(30,-10)
     drone2.velocity = Vector2(20,20)

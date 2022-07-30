@@ -12,7 +12,6 @@ def init(W, H, T, raycast_color=(0,255,0)):
     global width
     width = W
     global window
-    global clock
     global raycolor
     raycolor = raycast_color
     window = pygame.display.set_mode((W, H))
@@ -24,7 +23,6 @@ def update():
     global height
     global physics_world
     global window
-    global clock
     global raycasts
     global raycolor
 
@@ -36,13 +34,8 @@ def update():
     for PhysObj in physics_world:
         PhysObj.draw(pygame, window, width, height)
 
-    clock.tick(60)
-
     centerVec = core2d.Vector2(width/2, height/2)
     for raycast in raycasts:
         cast = (raycast[0].inverse_Y()+centerVec)
         pygame.draw.line(window, raycolor, cast.to_tuple(), (cast+raycast[1].normalize().inverse_Y()*raycast[2]).to_tuple())
 
-    pygame.display.update()
-
-    clock.tick(60)

@@ -3,6 +3,8 @@ import core2d
 import copy
 from trainerSettings import TrainerSettings
 
+from trainerSettings import TrainerSettings
+
 def colldide(o1, o2):
     if o1.type == "rect" and o2.type == "rect":
         return rects_collide(o1, o2)
@@ -12,6 +14,12 @@ def colldide(o1, o2):
         return sphere_collide_rect(o2, o1)
     elif o2.type == "rect" and o1.type == "circle":
         return sphere_collide_rect(o1, o2)
+
+def out_worldborder(object):
+    if object.type == "rect":
+        return rect_out_worldborder(object)
+    elif object.type == "circle":
+        return circle_out_worldborder(object)
 
 def rects_collide(r1, r2):
     l1 = r1.pos - r1.param2/2
@@ -42,8 +50,22 @@ def sphere_collide_rect(circle, rect):
     return (cornerDistance_sq <= (circle.param2**2))
 
 
-def raycast_sphere(cyc, start, dir):
-    if cyc.in_bounds(start):
+def rect_out_worldborder(rect):
+    return  rect.pos.x-rect.param2.x/2 < -TrainerSettings.WORLD_SIZE/2 or \
+            rect.pos.y-rect.param2.y/2 < -TrainerSettings.WORLD_SIZE/2 or \
+            rect.pos.x+rect.param2.x/2 > TrainerSettings.WORLD_SIZE/2 or \
+            rect.pos.y+rect.param2.y/2 > TrainerSettings.WORLD_SIZE/2
+
+
+def circle_out_worldborder(circle):
+    return circle.pos.x - circle.param2 / 2 < -TrainerSettings.WORLD_SIZE / 2 or \
+           circle.pos.y - circle.param2 / 2 < -TrainerSettings.WORLD_SIZE / 2 or \
+           circle.pos.x + circle.param2 / 2 > TrainerSettings.WORLD_SIZE / 2 or \
+           circle.pos.y + circle.param2 / 2 > TrainerSettings.WORLD_SIZE / 2
+
+
+def raycast_sphere(cyc, start, dir, in_bounds_break=True):
+    if in_bounds_break and cyc.in_bounds(start) :
         return 0
     dir = dir.normalize()
     dx = start.x - cyc.pos.x
@@ -82,7 +104,9 @@ def raycast_line(LineStart, LineDir, start, dir):
     return t
 
 
-def raycast_rect(rect, start, dir):
+def raycast_rect(rect, start, dir, in_bounds_break=True):
+    if in_bounds_break and rect.in_bounds(start):
+        return 0
     bottomleft = rect.pos - rect.param2 / 2
     topright = rect.pos + rect.param2 / 2
 
@@ -137,3 +161,11 @@ def sort(dir):
         newDir.append(actual)
         dir.remove(i)
     return newDir
+World_Rect = core2d.Rect(core2d.Vector2(-TrainerSettings.WORLD_SIZE/2,-TrainerSettings.WORLD_SIZE/2),
+                         core2d.Vector2(TrainerSettings.WORLD_SIZE/2,TrainerSettings.WORLD_SIZE/2))
+def raycast_worldborder(start, dir):
+    return raycast_rect(World_Rect, start, dir, False)
+
+
+def raycast_world(world, me, dir):
+    pass

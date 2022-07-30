@@ -8,14 +8,13 @@ from core2d import collision
 
 class PhysicalBody(core2d.Shape2):
 
-    def __init__(self, Shape, color=(0, 0, 0), evt_oncol=lambda:None):
+    def __init__(self, Shape, color=(0, 0, 0)):
         super().__init__(Shape.pos, Shape.param2, Shape.type)
         self.target = core2d.Vector2(240,-240)
         self.velocity = core2d.Vector2(0, 0)
         self.dir = core2d.Vector2(1,1)
         criticalNeighbour = core2d.Vector2(0,0)
         self.color = color
-        self.evt_oncollision=evt_oncol
 
     def moveAsTest(self, direction):
         breakDown = False
@@ -90,7 +89,10 @@ class PhysicalBody(core2d.Shape2):
             pygame.draw.rect(window, self.color, (npos[0]-self.param2.x/2, npos[1]-self.param2.y/2,
                                              self.param2.x, self.param2.y))
 
-    def evt_oncollision(self, other):
+    def evt_collision(self, other):
+        pass
+
+    def evt_world_border(self):
         pass
 
 def physicsProcessTarget(objects):
@@ -107,6 +109,10 @@ def physicsProcessTime(objects, t):
     for a in objects:
         observeCollisions(a, objects)
 
+        if collision.out_worldborder(a):
+            a.evt_world_border()
+    core2d.graphics.update()
+
     for b in objects: # gives every single object the distance to his nearest neighbour
         if b.type == "circle":
             b.criticalNeighbour = collision.raycast_world(b,objects)[0]
@@ -118,5 +124,5 @@ def observeCollisions(me, objects):
     # obverves collisions
     for i in objects:
         if collision.colldide(me, i):
-            if(me != i):
-                me.evt_collision(other)
+            if me != i:
+                me.evt_collision(i)
