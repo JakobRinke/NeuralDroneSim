@@ -109,13 +109,6 @@ def physicsProcessTime(objects, t):
         observeCollisions(a, objects)
         if collision.out_worldborder(a):
             a.evt_world_border()
-    for a in objects:
-        try:
-            a.distanceNeighbour = collision.raycast_world(a, objects)[0]
-            print("distance to Neighbour: " + str(a.distanceNeighbour.x) + "|" + str(a.distanceNeighbour.y))
-        except IndexError:
-            a.distanceNeighbour = "NaN"
-            print("to danger to collide")
     core2d.graphics.update()
 
 def observeCollisions(me, objects):

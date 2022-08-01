@@ -1,5 +1,4 @@
 import math
-
 import core2d.physics
 import core2d.collision
 from core2d import *
@@ -57,3 +56,4 @@ class Drone(core2d.physics.PhysicalBody):
         for cast in TrainerSettings.RAYCASTS_DRONE:
             output.append(core2d.collision.raycast_world(self, world, cast))
         return output
+
