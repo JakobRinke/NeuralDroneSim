@@ -102,14 +102,15 @@ def physicsProcessTarget(objects):
         observeCollisions(a, objects)
     return ret
 
-def physicsProcessTime(objects, t):
+def physicsProcessTime(objects, t, updateGraphics=True):
     for a in objects:
         a.processVelocity(t)
     for a in objects:
         observeCollisions(a, objects)
         if collision.out_worldborder(a):
             a.evt_world_border()
-    core2d.graphics.update()
+    if updateGraphics:
+        core2d.graphics.update()
 
 def observeCollisions(me, objects):
     # obverves collisions

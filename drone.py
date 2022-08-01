@@ -7,7 +7,7 @@ from trainerSettings import TrainerSettings
 
 class Drone(core2d.physics.PhysicalBody):
 
-    def __init__(self, swarmStartPos, fieldX, fieldY, Swarm):
+    def __init__(self, swarmStartPos, fieldX, fieldY, agent):
         super().__init__(Circle(swarmStartPos +
                                 Vector2(fieldX * TrainerSettings.DRONE_DIST,
                                         fieldY * TrainerSettings.DRONE_DIST),
@@ -15,13 +15,13 @@ class Drone(core2d.physics.PhysicalBody):
                          color=(255, 0, 0))
         self.fieldX = fieldX
         self.fieldY = fieldY
-        self.Swarm = Swarm
+        self.agent = agent
 
     def getAliveNeighbourCount(self):
         o = -1
         for x in range(-1, 2):
             for y in range(-1, 2):
-                if not self.Swarm[self.fieldX + x][self.fieldY + y] is None:
+                if not self.agent.swarm[self.fieldX + x][self.fieldY + y] is None:
                     o += 1
         return o
 
@@ -32,13 +32,13 @@ class Drone(core2d.physics.PhysicalBody):
                                 rad=True)
 
     ####### Parameters that a given to the Neural Network  ###########
-    def get_network_parameters(self, objective):
-        params = self.get_inner_parameters(objective)
+    def get_network_parameters(self, objective, world):
+        params = self.get_inner_parameters(objective, world)
         for x in range(-1, 2):
             for y in range(-1, 2):
-                if (x != 0 or y != 0) and not self.Swarm[self.fieldX + x][self.fieldY + y] is None:
+                if (x != 0 or y != 0) and not self.agent.swarm[self.fieldX + x][self.fieldY + y] is None:
                     params = (*params,
-                              *self.Swarm[self.fieldX + x][self.fieldY + y]
+                              *self.agent.swarm[self.fieldX + x][self.fieldY + y]
                               .get_export_parameters(self.pos))
         return params
 
@@ -47,13 +47,16 @@ class Drone(core2d.physics.PhysicalBody):
         return (self.pos - relative).as_rad_tuple()
 
     # Parameters that only the Drone itself has
-    def get_inner_parameters(self, objective, world):
-        dst_obj = (self.pos - objective).as_rad_tuple()
-        return *dst_obj, self.getAliveNeighbourCount(), *self.get_all_dir_raycast(world)
+    def get_inner_parameters(self):
+        dst_obj = (self.pos - self.agent.objective).as_rad_tuple()
+        return *dst_obj, self.getAliveNeighbourCount(), *self.get_all_dir_raycast()
 
-    def get_all_dir_raycast(self, world):
+    def get_all_dir_raycast(self):
         output = []
         for cast in TrainerSettings.RAYCASTS_DRONE:
-            output.append(core2d.collision.raycast_world(self, world, cast))
+            output.append(core2d.collision.raycast_world(self, self.agent.world, cast))
         return output
+
+
+    # TODO: Oncollision Function Overload (physics.py)
 
