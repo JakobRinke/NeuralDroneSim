@@ -1,6 +1,7 @@
 import math
 
 import core2d.physics
+import core2d.collision
 from core2d import *
 from trainerSettings import TrainerSettings
 
@@ -47,9 +48,12 @@ class Drone(core2d.physics.PhysicalBody):
         return (self.pos - relative).as_rad_tuple()
 
     # Parameters that only the Drone itself has
-    def get_inner_parameters(self, objective):
+    def get_inner_parameters(self, objective, world):
         dst_obj = (self.pos - objective).as_rad_tuple()
-        return *dst_obj, self.getAliveNeighbourCount()
+        return *dst_obj, self.getAliveNeighbourCount(), *self.get_all_dir_raycast(world)
 
-    def get_all_dir_raycast(self):
-        pass
+    def get_all_dir_raycast(self, world):
+        output = []
+        for cast in TrainerSettings.RAYCASTS_DRONE:
+            output.append(core2d.collision.raycast_world(self, world, cast))
+        return output

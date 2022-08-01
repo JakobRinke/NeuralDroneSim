@@ -125,22 +125,35 @@ def raycast_rect(rect, start, dir, in_bounds_break=True):
                          start, dir), l)
     return l
 
+World_Rect = core2d.Rect(core2d.Vector2(-TrainerSettings.WORLD_SIZE/2,-TrainerSettings.WORLD_SIZE/2),
+                         core2d.Vector2(TrainerSettings.WORLD_SIZE/2,TrainerSettings.WORLD_SIZE/2))
+def raycast_worldborder(start, dir):
+    return raycast_rect(World_Rect, start, dir, False)
+
+
 def raycast_world(me, world, dir):
-    criticalOnes = []
-    raycast = generateCoordinatesOnWay(me.pos,me.velocity)
+   # criticalOnes = []
+    l = raycast_worldborder(me.pos, dir)
+    #raycast = generateCoordinatesOnWay(me.pos,me.velocity)
     for b in world:
-        if me != b and b.type == "circle":
-            for p in raycast:
-                if (p.x >= b.pos.x - (TrainerSettings.DRONE_SIZE/2) and p.x <= b.pos.x + (TrainerSettings.DRONE_SIZE/2)
-                and p.y >= b.pos.y - (TrainerSettings.DRONE_SIZE/2) and p.y <= b.pos.y + (TrainerSettings.DRONE_SIZE/2)):
+        if me != b:
+            if b.type == "circle":
+                l = min(l, raycast_sphere(b, me.pos, dir))
+                """
+                  for p in raycast:
+                    if (p.x >= b.pos.x - (TrainerSettings.DRONE_SIZE/2) and p.x <= b.pos.x + (TrainerSettings.DRONE_SIZE/2)
+                    and p.y >= b.pos.y - (TrainerSettings.DRONE_SIZE/2) and p.y <= b.pos.y + (TrainerSettings.DRONE_SIZE/2)):
+                        distance = core2d.Vector2(0,0)
+                        distance.x = abs(p.x-b.pos.x)
+                        distance.y = abs(p.y-b.pos.y)
+                        criticalOnes.append(distance)
+                        break
+                """
+            if b.tyoe == "rect":
+                l = min(l, raycast_rect(b, me.pos, dir))
+    return l
+    #return sort(criticalOnes)
 
-                    distance = core2d.Vector2(0,0)
-                    distance.x = abs(p.x-b.pos.x)
-                    distance.y = abs(p.y-b.pos.y)
-                    criticalOnes.append(distance)
-                    break
-
-    return sort(criticalOnes)
 
 def generateCoordinatesOnWay(start, vel):
     raycast = []
@@ -166,7 +179,4 @@ def sort(dir):
         dir.remove(i)
     return newDir
 
-World_Rect = core2d.Rect(core2d.Vector2(-TrainerSettings.WORLD_SIZE/2,-TrainerSettings.WORLD_SIZE/2),
-                         core2d.Vector2(TrainerSettings.WORLD_SIZE/2,TrainerSettings.WORLD_SIZE/2))
-def raycast_worldborder(start, dir):
-    return raycast_rect(World_Rect, start, dir, False)
+
