@@ -32,14 +32,17 @@ class Drone(core2d.physics.PhysicalBody):
                                 rad=True)
 
     ####### Parameters that a given to the Neural Network  ###########
-    def get_network_parameters(self, objective, world):
-        params = self.get_inner_parameters(objective, world)
+    def get_network_parameters(self):
+        params = self.get_inner_parameters()
         for x in range(-1, 2):
             for y in range(-1, 2):
-                if (x != 0 or y != 0) and not self.agent.swarm[self.fieldX + x][self.fieldY + y] is None:
-                    params = (*params,
-                              *self.agent.swarm[self.fieldX + x][self.fieldY + y]
-                              .get_export_parameters(self.pos))
+                if x != 0 or y != 0:
+                    if not self.agent.swarm[self.fieldX + x][self.fieldY + y] is None:
+                        params = (*params,
+                                  *self.agent.swarm[self.fieldX + x][self.fieldY + y]
+                                  .get_export_parameters(self.pos))
+                    else:
+                        params = (*params, TrainerSettings.WORLD_SIZE, 0)
         return params
 
     # Parameters that the Neighbours get
@@ -58,5 +61,19 @@ class Drone(core2d.physics.PhysicalBody):
         return output
 
 
-    # TODO: Oncollision Function Overload (physics.py)
+
+    def remove_drone_from_swarm(self):
+        for item in self.agent.world:
+            if isinstance(item ,Drone) and item is not None:
+                if item.fieldX == self.fieldX and item.fieldY == self.fieldY:
+                    self.agent.world.remove(item)
+
+        self.agent.swarm[self.fieldX][self.fieldY] = None
+
+    def evt_collision(self, other):
+        self.remove_drone_from_swarm()
+
+    def evt_world_border(self):
+        self.remove_drone_from_swarm()
+
 

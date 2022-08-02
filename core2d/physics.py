@@ -110,6 +110,7 @@ def physicsProcessTime(objects, t, updateGraphics=True):
         if collision.out_worldborder(a):
             a.evt_world_border()
     if updateGraphics:
+        core2d.graphics.physics_world = objects
         core2d.graphics.update()
 
 def observeCollisions(me, objects):

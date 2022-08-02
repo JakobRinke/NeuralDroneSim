@@ -1,67 +1,84 @@
-import time
+import neat
+import os
+import neat_agent
 from trainerSettings import TrainerSettings
+import random
+import core2d
+import core2d.physics
+import time
 import core2d.graphics
-from core2d import *
-import core2d.collision as col
-from core2d.physics import *
-import math
-import pygame
-import sys
+neat_agent.physics = core2d.physics
+neat_agent.draw = core2d.graphics
 
-def main():
-    core2d.graphics.init(TrainerSettings.WORLD_SIZE, TrainerSettings.WORLD_SIZE, "PhysTest")
 
-    #rect = PhysicalBody(Rect(Vector2(100,100), Vector2(50, 50)))
-    #core2d.graphics.physics_world.append(rect)
+GEN = 0
+def main(genomes, config):
+    global GEN
+    global fast_forward
+    GEN += 1
+    nets = []
+    ge = []
+    agents = []
+    core2d.graphics.init("Training AI")
+    world, swarmpos, objective = create_base_world()
+    draw = True
+    for _, g in genomes:
+        net = neat.nn.FeedForwardNetwork.create(g, config)
+        nets.append(net)
+        agents.append(neat_agent.BaseNeatAgent(world, swarmpos, objective, net.activate, draw))
+        g.fitness = 0
+        ge.append(g)
+        draw = False
 
-    drone1 = PhysicalBody(Circle(Vector2(-20,0), 10))
-    drone2 = PhysicalBody(Circle(core2d.Vector2(-119,0),10))
-    drone1.velocity = Vector2(10,0)
-    drone2.velocity = Vector2(10,0)
-    core2d.graphics.physics_world.append(drone1)
-    core2d.graphics.physics_world.append(drone2)
+    endtime = time.time() + TrainerSettings.exec_time
+    last = time.time()
+    while time.time() <= endtime:
+        time.sleep(TrainerSettings.update_time)
+        delta_time = time.time() - last
+        last = time.time()
+        for i, agent in enumerate(agents):
+            agent.proccess_network(delta_time*TrainerSettings.time_scale)
+            ge[i].fitness = agent.getFitness()
 
-    time.sleep(2)
-    core2d.graphics.update()
-    time_scale = TrainerSettings.time_scale
-    t = time.time()
 
-    for i in range(200):
-        time.sleep(TrainerSettings.time_Waiting)
-        physicsProcessTime(core2d.graphics.physics_world,TrainerSettings.time_Waiting*time_scale)
-        t = time.time()
-    time.sleep(5)
 
-    print("-----Finished-----")
-    sys.exit(0)
 
-'''
-    v_start = Vector2(0, 200)
-    for i in range(-5, 5):
-        v_dir = Vector2(i/7, -1)
-        ln = col.raycast_sphere(circle, v_start, v_dir)
-        core2d.graphics.raycasts.append((v_start, v_dir, ln))
 
-    v_start = Vector2(0, -200)
-    for i in range(-5, 5):
-        v_dir = Vector2(i / 7, 1)
-        ln = col.raycast_sphere(circle, v_start, v_dir)
-        core2d.graphics.raycasts.append((v_start, v_dir, ln))
 
-    v_start = Vector2(200, 0)
-    for i in range(-5, 5):
-        v_dir = Vector2(-1, i / 7)
-        ln = col.raycast_sphere(circle, v_start, v_dir)
-        core2d.graphics.raycasts.append((v_start, v_dir, ln))
+def run_neat(config_path):
+    config = neat.config.Config(neat.DefaultGenome, neat.DefaultReproduction, neat.DefaultSpeciesSet, neat.DefaultStagnation, config_path)
 
-    v_start = Vector2(-200, 0)
-    for i in range(-5, 5):
-        v_dir = Vector2(1, i / 7)
-        ln = col.raycast_sphere(circle, v_start, v_dir)
-        core2d.graphics.raycasts.append((v_start, v_dir, ln))
+    p = neat.Population(config)
 
-    
-'''
+    p.add_reporter(neat.StdOutReporter(True))
+    stats = neat.StatisticsReporter()
+    p.add_reporter(stats)
+    winner = p.run(main, 50)
+
+
+def create_base_world():
+    world = []
+    ws_div_3 = int(TrainerSettings.WORLD_SIZE / 3)
+    swarmpos = core2d.Vector2(random.randrange(-ws_div_3, ws_div_3),
+                              random.randrange(-ws_div_3, ws_div_3))
+    objectivePos = core2d.Vector2( -TrainerSettings.WORLD_SIZE / 2 - 100,  -TrainerSettings.WORLD_SIZE / 2 - 100)
+    while   -TrainerSettings.WORLD_SIZE / 2 < objectivePos.x < TrainerSettings.WORLD_SIZE / 2 and \
+            -TrainerSettings.WORLD_SIZE / 2 < objectivePos.y < TrainerSettings.WORLD_SIZE / 2 and \
+            (objectivePos - swarmpos).length() > 150:
+        objectivePos.x = random.randrange(-TrainerSettings.WORLD_SIZE / 2, TrainerSettings.WORLD_SIZE / 2)
+        objectivePos.y = random.randrange(-TrainerSettings.WORLD_SIZE / 2, TrainerSettings.WORLD_SIZE / 2)
+
+    for i in range(2):
+        pos = core2d.Vector2(random.randrange(-ws_div_3, ws_div_3),
+                              random.randrange(-ws_div_3, ws_div_3))
+        rect = core2d.physics.PhysicalBody(core2d.Rect(pos, core2d.Vector2(40, 40)))
+        world.append(rect)
+    return world, swarmpos, objectivePos
+
+
+
 if __name__ == '__main__':
-    main()
+    local_dir = os.path.dirname(__file__)
+    config_path = os.path.join(local_dir, "config-feedforward.txt")
+    run_neat(config_path)
 

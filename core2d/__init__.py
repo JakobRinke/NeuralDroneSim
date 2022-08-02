@@ -15,7 +15,11 @@ class Vector2:
         if self.length() == 0:
             return Vector2(0, 0)
         k = math.sqrt(1/(self.x*self.x+self.y*self.y))
-        return self * k
+        return round(self * k, self.rnd)
+
+    def __round__(self, n=None):
+        return Vector2(round(self.x, n), round(self.y, n))
+
 
     def to_tuple(self):
         return (self.x, self.y)

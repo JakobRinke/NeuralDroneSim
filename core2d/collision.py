@@ -149,7 +149,7 @@ def raycast_world(me, world, dir):
                         criticalOnes.append(distance)
                         break
                 """
-            if b.tyoe == "rect":
+            if b.type == "rect":
                 l = min(l, raycast_rect(b, me.pos, dir))
     return l
     #return sort(criticalOnes)

@@ -1,20 +1,20 @@
 import time
-
+from trainerSettings import TrainerSettings
 import pygame
 import sys
 import core2d
 physics_world = []
 raycasts = []
 
-def init(W, H, T, raycast_color=(0,255,0)):
+def init(T, raycast_color=(0,255,0)):
     global height
-    height = H
+    height = TrainerSettings.WORLD_SIZE
     global width
-    width = W
+    width = TrainerSettings.WORLD_SIZE
     global window
     global raycolor
     raycolor = raycast_color
-    window = pygame.display.set_mode((W, H))
+    window = pygame.display.set_mode((height, width))
     pygame.display.set_caption(T)
     clock = pygame.time.Clock()
 
@@ -32,7 +32,8 @@ def update():
     window.fill((255, 255, 255))
 
     for PhysObj in physics_world:
-        PhysObj.draw(pygame, window, width, height)
+        if PhysObj is not None:
+            PhysObj.draw(pygame, window, width, height)
 
     centerVec = core2d.Vector2(width/2, height/2)
     for raycast in raycasts:
