@@ -21,6 +21,7 @@ def main(genomes, config):
     agents = []
     core2d.graphics.init("Training AI")
     world, swarmpos, objective = create_base_world()
+    core2d.graphics.goal = objective
     draw = True
     for _, g in genomes:
         net = neat.nn.FeedForwardNetwork.create(g, config)
@@ -53,7 +54,8 @@ def run_neat(config_path):
     p.add_reporter(neat.StdOutReporter(True))
     stats = neat.StatisticsReporter()
     p.add_reporter(stats)
-    winner = p.run(main, 50)
+    winner = p.run(main, 300)
+    print(winner)
 
 
 def create_base_world():
@@ -62,15 +64,19 @@ def create_base_world():
     swarmpos = core2d.Vector2(random.randrange(-ws_div_3, ws_div_3),
                               random.randrange(-ws_div_3, ws_div_3))
     objectivePos = core2d.Vector2( -TrainerSettings.WORLD_SIZE / 2 - 100,  -TrainerSettings.WORLD_SIZE / 2 - 100)
-    while   -TrainerSettings.WORLD_SIZE / 2 < objectivePos.x < TrainerSettings.WORLD_SIZE / 2 and \
-            -TrainerSettings.WORLD_SIZE / 2 < objectivePos.y < TrainerSettings.WORLD_SIZE / 2 and \
-            (objectivePos - swarmpos).length() > 150:
+    while not ( -TrainerSettings.WORLD_SIZE / 2 < objectivePos.x < TrainerSettings.WORLD_SIZE / 2 and
+                -TrainerSettings.WORLD_SIZE / 2 < objectivePos.y < TrainerSettings.WORLD_SIZE / 2) or \
+            (objectivePos - swarmpos).length() < TrainerSettings.WORLD_SIZE/2:
         objectivePos.x = random.randrange(-TrainerSettings.WORLD_SIZE / 2, TrainerSettings.WORLD_SIZE / 2)
         objectivePos.y = random.randrange(-TrainerSettings.WORLD_SIZE / 2, TrainerSettings.WORLD_SIZE / 2)
 
     for i in range(2):
-        pos = core2d.Vector2(random.randrange(-ws_div_3, ws_div_3),
-                              random.randrange(-ws_div_3, ws_div_3))
+        pos = core2d.Vector2(-TrainerSettings.WORLD_SIZE / 2 - 100, -TrainerSettings.WORLD_SIZE / 2 - 100)
+        while not (-TrainerSettings.WORLD_SIZE / 2 < pos.x < TrainerSettings.WORLD_SIZE / 2 and
+                   -TrainerSettings.WORLD_SIZE / 2 < pos.y < TrainerSettings.WORLD_SIZE / 2) or \
+                (pos - swarmpos).length() < 150 and  (pos - objectivePos).length() < 50:
+            pos.x = random.randrange(-TrainerSettings.WORLD_SIZE / 2, TrainerSettings.WORLD_SIZE / 2)
+            pos.y = random.randrange(-TrainerSettings.WORLD_SIZE / 2, TrainerSettings.WORLD_SIZE / 2)
         rect = core2d.physics.PhysicalBody(core2d.Rect(pos, core2d.Vector2(40, 40)))
         world.append(rect)
     return world, swarmpos, objectivePos

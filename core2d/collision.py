@@ -132,27 +132,14 @@ def raycast_worldborder(start, dir):
 
 
 def raycast_world(me, world, dir):
-   # criticalOnes = []
     l = raycast_worldborder(me.pos, dir)
-    #raycast = generateCoordinatesOnWay(me.pos,me.velocity)
     for b in world:
         if me != b:
             if b.type == "circle":
                 l = min(l, raycast_sphere(b, me.pos, dir))
-                """
-                  for p in raycast:
-                    if (p.x >= b.pos.x - (TrainerSettings.DRONE_SIZE/2) and p.x <= b.pos.x + (TrainerSettings.DRONE_SIZE/2)
-                    and p.y >= b.pos.y - (TrainerSettings.DRONE_SIZE/2) and p.y <= b.pos.y + (TrainerSettings.DRONE_SIZE/2)):
-                        distance = core2d.Vector2(0,0)
-                        distance.x = abs(p.x-b.pos.x)
-                        distance.y = abs(p.y-b.pos.y)
-                        criticalOnes.append(distance)
-                        break
-                """
             if b.type == "rect":
                 l = min(l, raycast_rect(b, me.pos, dir))
     return l
-    #return sort(criticalOnes)
 
 
 def generateCoordinatesOnWay(start, vel):

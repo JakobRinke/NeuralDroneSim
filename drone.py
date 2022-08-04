@@ -9,8 +9,8 @@ class Drone(core2d.physics.PhysicalBody):
 
     def __init__(self, swarmStartPos, fieldX, fieldY, agent):
         super().__init__(Circle(swarmStartPos +
-                                Vector2(fieldX * TrainerSettings.DRONE_DIST,
-                                        fieldY * TrainerSettings.DRONE_DIST),
+                                Vector2((fieldX-TrainerSettings.DRONENUM/2) * TrainerSettings.DRONE_DIST,
+                                        (fieldY-TrainerSettings.DRONENUM/2) * TrainerSettings.DRONE_DIST),
                                 TrainerSettings.DRONE_SIZE),
                          color=(255, 0, 0))
         self.fieldX = fieldX
@@ -27,13 +27,19 @@ class Drone(core2d.physics.PhysicalBody):
 
     # The Output (tilt and speed of the Drone) calculate to real Velocity and set as parameters
     def set_drone_output_params(self, params):
+        """
         self.velocity = Vector2(params[0] * TrainerSettings.MAX_DRONE_SPEED,
                                 params[1] * math.pi * 2,
                                 rad=True)
+        """
+        self.velocity = Vector2(params[0], params[1]).normalize() * TrainerSettings.MAX_DRONE_SPEED
+
 
     ####### Parameters that a given to the Neural Network  ###########
     def get_network_parameters(self):
         params = self.get_inner_parameters()
+        """
+        
         for x in range(-1, 2):
             for y in range(-1, 2):
                 if x != 0 or y != 0:
@@ -43,6 +49,7 @@ class Drone(core2d.physics.PhysicalBody):
                                   .get_export_parameters(self.pos))
                     else:
                         params = (*params, TrainerSettings.WORLD_SIZE, 0)
+        """
         return params
 
     # Parameters that the Neighbours get
@@ -51,8 +58,10 @@ class Drone(core2d.physics.PhysicalBody):
 
     # Parameters that only the Drone itself has
     def get_inner_parameters(self):
-        dst_obj = (self.pos - self.agent.objective).as_rad_tuple()
-        return *dst_obj, self.getAliveNeighbourCount(), *self.get_all_dir_raycast()
+        #dst_obj = (self.pos - self.agent.objective).as_rad_tuple()
+        dst_obj = (self.pos - self.agent.objective).to_tuple()
+        return *dst_obj, *self.get_all_dir_raycast() \
+             #, self.getAliveNeighbourCount()
 
     def get_all_dir_raycast(self):
         output = []

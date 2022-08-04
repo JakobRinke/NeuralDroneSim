@@ -1,5 +1,4 @@
 import sys
-import time
 import core2d
 from trainerSettings import TrainerSettings
 from core2d import graphics
