@@ -18,7 +18,6 @@ def init(T, raycast_color=(0,255,0)):
     raycolor = raycast_color
     window = pygame.display.set_mode((height, width))
     pygame.display.set_caption(T)
-    clock = pygame.time.Clock()
 
 def update():
     global width
@@ -27,9 +26,6 @@ def update():
     global window
     global raycasts
     global raycolor
-
-    i = 0
-    crashed = False
 
     window.fill((255, 255, 255))
 

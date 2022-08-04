@@ -125,8 +125,8 @@ def raycast_rect(rect, start, dir, in_bounds_break=True):
                          start, dir), l)
     return l
 
-World_Rect = core2d.Rect(core2d.Vector2(-TrainerSettings.WORLD_SIZE/2,-TrainerSettings.WORLD_SIZE/2),
-                         core2d.Vector2(TrainerSettings.WORLD_SIZE/2,TrainerSettings.WORLD_SIZE/2))
+World_Rect = core2d.Rect(core2d.Vector2(0,0),
+                         core2d.Vector2(TrainerSettings.WORLD_SIZE,TrainerSettings.WORLD_SIZE))
 def raycast_worldborder(start, dir):
     return raycast_rect(World_Rect, start, dir, False)
 
@@ -134,7 +134,7 @@ def raycast_worldborder(start, dir):
 def raycast_world(me, world, dir):
     l = raycast_worldborder(me.pos, dir)
     for b in world:
-        if me != b:
+        if me.pos.x != b.pos.x and me.pos.y != b.pos.y:
             if b.type == "circle":
                 l = min(l, raycast_sphere(b, me.pos, dir))
             if b.type == "rect":

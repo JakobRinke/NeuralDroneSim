@@ -54,7 +54,7 @@ def run_neat(config_path):
     p.add_reporter(neat.StdOutReporter(True))
     stats = neat.StatisticsReporter()
     p.add_reporter(stats)
-    winner = p.run(main, 300)
+    winner = p.run(main, 1000)
     print(winner)
 
 
