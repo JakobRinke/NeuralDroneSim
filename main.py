@@ -22,9 +22,10 @@ def main(genomes, config):
     agents = []
     core2d.graphics.init("Training AI")
    # world, swarmpos, objective = create_base_world()
-    world, swarmpos, objective = defence_world()
+    world, swarmpos, objective = random_defenceworld()
     core2d.graphics.goal = objective
     draw = True
+    currently_showing = 0
     for _, g in genomes:
         net = neat.nn.FeedForwardNetwork.create(g, config)
         nets.append(net)
@@ -39,9 +40,17 @@ def main(genomes, config):
         time.sleep(TrainerSettings.update_time)
         delta_time = time.time() - last
         last = time.time()
+        strongest = 0
+        strogest_fitness = 0
         for i, agent in enumerate(agents):
             agent.proccess_network(delta_time*TrainerSettings.time_scale)
             ge[i].fitness = agent.getFitness(delta_time*TrainerSettings.time_scale)
+            if ge[i].fitness > strogest_fitness:
+                strongest = i
+                strogest_fitness = ge[i].fitness
+        agents[currently_showing].updateGraphics = False
+        agents[strongest].updateGraphics = True
+        currently_showing = strongest
 
 
 
@@ -104,6 +113,18 @@ def defence_world():
     world.append(core2d.physics_object.path_moving_object(core2d.Rect(core2d.Vector2(200, 200), core2d.Vector2(40, 40)),points, TrainerSettings.OBJ_SPEED))
     return world, core2d.Vector2(0, 0), core2d.Vector2(0, 0)
 
+
+def def_world_rand(x=0, y=250):
+    return random.choice([-1, 1]) * random.randrange(x, y)
+
+def random_defenceworld():
+    world = []
+    for i in range(6):
+        points = [core2d.Vector2(def_world_rand(150, 250), def_world_rand()), core2d.Vector2(def_world_rand(150, 250), def_world_rand())]
+        world.append(
+            core2d.physics_object.path_moving_object(core2d.Rect(points[0], core2d.Vector2(40, 40)),
+                                                     points, TrainerSettings.OBJ_SPEED))
+    return world, core2d.Vector2(0, 0), core2d.Vector2(0, 0)
 
 
 if __name__ == '__main__':
