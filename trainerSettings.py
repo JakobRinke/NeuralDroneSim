@@ -8,7 +8,9 @@ class TrainerSettings:
 
     MINIMUM_OBJECTIVE_DIST = 150
 
-    DRONENUM = 4
+    OBJ_SPEED = 15
+
+    DRONENUM = 1
 
 
     MAX_DRONE_SPEED = 20  # Maximum speed of a drone
@@ -29,8 +31,8 @@ class TrainerSettings:
 
 
     update_time = 1/30
-    time_scale = 2.0
-    exec_time = 10.0
+    time_scale = 4.0
+    exec_time = 25.0
 
 
 

@@ -7,6 +7,7 @@ import core2d
 import core2d.physics
 import time
 import core2d.graphics
+import core2d.physics_object
 neat_agent.physics = core2d.physics
 neat_agent.draw = core2d.graphics
 
@@ -20,13 +21,14 @@ def main(genomes, config):
     ge = []
     agents = []
     core2d.graphics.init("Training AI")
-    world, swarmpos, objective = create_base_world()
+   # world, swarmpos, objective = create_base_world()
+    world, swarmpos, objective = defence_world()
     core2d.graphics.goal = objective
     draw = True
     for _, g in genomes:
         net = neat.nn.FeedForwardNetwork.create(g, config)
         nets.append(net)
-        agents.append(neat_agent.BaseNeatAgent(world, swarmpos, objective, net.activate, draw))
+        agents.append(neat_agent.DefenceNeatAgent(world, swarmpos, objective, net.activate, draw))
         g.fitness = 0
         ge.append(g)
         draw = False
@@ -39,7 +41,8 @@ def main(genomes, config):
         last = time.time()
         for i, agent in enumerate(agents):
             agent.proccess_network(delta_time*TrainerSettings.time_scale)
-            ge[i].fitness = agent.getFitness()
+            ge[i].fitness = agent.getFitness(delta_time*TrainerSettings.time_scale)
+
 
 
 
@@ -54,7 +57,7 @@ def run_neat(config_path):
     p.add_reporter(neat.StdOutReporter(True))
     stats = neat.StatisticsReporter()
     p.add_reporter(stats)
-    winner = p.run(main, 1000)
+    winner = p.run(main, 100000000)
     print(winner)
 
 
@@ -80,6 +83,26 @@ def create_base_world():
         rect = core2d.physics.PhysicalBody(core2d.Rect(pos, core2d.Vector2(40, 40)))
         world.append(rect)
     return world, swarmpos, objectivePos
+
+def createStaticworld():
+    world = []
+
+    world.append(core2d.physics.PhysicalBody(core2d.Rect(core2d.Vector2(0, 50), core2d.Vector2(40, 40))))
+    world.append(core2d.physics.PhysicalBody(core2d.Rect(core2d.Vector2(100, 0), core2d.Vector2(40, 40))))
+
+    return world, core2d.Vector2(-200, -100), core2d.Vector2(200,200)
+
+def defence_world():
+    world = []
+    points = [core2d.Vector2(200, -200), core2d.Vector2(-200, 200)]
+    world.append(core2d.physics_object.path_moving_object(core2d.Rect(core2d.Vector2(-200, 200), core2d.Vector2(40, 40)),points,TrainerSettings.OBJ_SPEED))
+    points = [core2d.Vector2(-200, -200), core2d.Vector2(200, 200)]
+    world.append(core2d.physics_object.path_moving_object(core2d.Rect(core2d.Vector2(-200, -200), core2d.Vector2(40, 40)),points,TrainerSettings.OBJ_SPEED))
+    points = [core2d.Vector2(200, -200), core2d.Vector2(-200, 200)]
+    world.append(core2d.physics_object.path_moving_object(core2d.Rect(core2d.Vector2(200, -200), core2d.Vector2(40, 40)), points,TrainerSettings.OBJ_SPEED))
+    points = [core2d.Vector2(-200, -200), core2d.Vector2(200, 200)]
+    world.append(core2d.physics_object.path_moving_object(core2d.Rect(core2d.Vector2(200, 200), core2d.Vector2(40, 40)),points, TrainerSettings.OBJ_SPEED))
+    return world, core2d.Vector2(0, 0), core2d.Vector2(0, 0)
 
 
 
