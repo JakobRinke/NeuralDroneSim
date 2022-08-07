@@ -1,5 +1,7 @@
 import time
 from trainerSettings import TrainerSettings
+import os
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 import pygame
 import pygame.draw
 import sys

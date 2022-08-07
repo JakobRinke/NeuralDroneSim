@@ -4,6 +4,8 @@ from trainerSettings import TrainerSettings
 from core2d import graphics
 import time
 from core2d import collision
+import drone
+
 
 class PhysicalBody(core2d.Shape2):
 
@@ -101,13 +103,15 @@ def physicsProcessTarget(objects):
         observeCollisions(a, objects)
     return ret
 
-def physicsProcessTime(objects, t, updateGraphics=True):
+def physicsProcessTime(objects, t, updateGraphics=False, onlydrones=False, observe_collisions=True):
     for a in objects:
-        a.processVelocity(t)
-    for a in objects:
-        observeCollisions(a, objects)
-        if collision.out_worldborder(a):
-            a.evt_world_border()
+        if (not onlydrones) or isinstance(a, drone.Drone):
+            a.processVelocity(t)
+    if observe_collisions:
+        for a in objects:
+            observeCollisions(a, objects)
+            if collision.out_worldborder(a):
+                a.evt_world_border()
     if updateGraphics:
         core2d.graphics.physics_world = objects
         core2d.graphics.update()

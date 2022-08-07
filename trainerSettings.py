@@ -3,6 +3,8 @@ from core2d import Vector2
 class TrainerSettings:
 
 
+    THREAD_NUM = 8
+
     WORLD_SIZE = 500
     WORLD_DIAG = WORLD_SIZE*1.41421356237
 
@@ -10,7 +12,7 @@ class TrainerSettings:
 
     OBJ_SPEED = 15
 
-    DRONENUM = 1
+    DRONENUM = 2
 
 
     MAX_DRONE_SPEED = 20  # Maximum speed of a drone
@@ -26,8 +28,33 @@ class TrainerSettings:
         Vector2(1, 1),
         Vector2(-1, 1),
         Vector2(1, -1),
-        Vector2(-1, -1)
+        Vector2(-1, -1),
+
+        Vector2(2, 1),
+        Vector2(-2, 1),
+        Vector2(1, 2),
+        Vector2(1, -2),
+        Vector2(2, -1),
+        Vector2(-2, -1),
+        Vector2(-1, 2),
+        Vector2(-1, -2),
     ]
+
+
+    """
+    RAYCASTS_DRONE = [
+        Vector2(1, 0),
+        Vector2(-1, 0),
+        Vector2(0, 1),
+        Vector2(0, -1),
+        Vector2(1, 1),
+        Vector2(-1, 1),
+        Vector2(1, -1),
+        Vector2(-1, -1),
+    ]
+
+
+    """
 
 
     update_time = 1/30
