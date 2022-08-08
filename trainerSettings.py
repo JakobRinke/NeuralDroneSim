@@ -12,7 +12,7 @@ class TrainerSettings:
 
     OBJ_SPEED = 15
 
-    DRONENUM = 2
+    DRONENUM = 3
 
 
     MAX_DRONE_SPEED = 20  # Maximum speed of a drone

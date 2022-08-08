@@ -6,6 +6,7 @@ import world_gen
 import core2d
 import core2d.physics
 import time
+import pickle
 from multiprocessing import Pool
 import core2d.graphics
 import core2d.physics_object
@@ -88,10 +89,11 @@ def run_neat(config_path):
     p.add_reporter(neat.StdOutReporter(True))
     stats = neat.StatisticsReporter()
     p.add_reporter(stats)
-    winner = p.run(main, 100000000)
+    winner = p.run(main, 400)
     print(winner)
-
-
+    win = p.best_genome
+    pickle.dump(winner, open('winner9.pkl', 'wb'))
+    pickle.dump(win, open('real_winner9.pkl', 'wb'))
 
 
 
