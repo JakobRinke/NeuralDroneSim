@@ -1,15 +1,15 @@
 import math
 import core2d.physics
 import core2d.collision
-from core2d import *
+import core2d
 from trainerSettings import TrainerSettings
 
 
 class Drone(core2d.physics.PhysicalBody):
 
     def __init__(self, swarmStartPos, fieldX, fieldY, agent):
-        super().__init__(Circle(swarmStartPos +
-                                Vector2((fieldX-TrainerSettings.DRONENUM/2) * TrainerSettings.DRONE_DIST,
+        super().__init__(core2d.Circle(swarmStartPos +
+                                core2d.Vector2((fieldX-TrainerSettings.DRONENUM/2) * TrainerSettings.DRONE_DIST,
                                         (fieldY-TrainerSettings.DRONENUM/2) * TrainerSettings.DRONE_DIST),
                                 TrainerSettings.DRONE_SIZE),
                          color=(255, 0, 0))
@@ -32,7 +32,7 @@ class Drone(core2d.physics.PhysicalBody):
                                 params[1] * math.pi * 2,
                                 rad=True)
         """
-        self.velocity = Vector2(params[0], params[1]).normalize() * TrainerSettings.MAX_DRONE_SPEED
+        self.velocity = core2d.Vector2(params[0], params[1]).normalize() * TrainerSettings.MAX_DRONE_SPEED
 
 
     ####### Parameters that a given to the Neural Network  ###########

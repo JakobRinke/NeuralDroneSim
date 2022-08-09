@@ -3,7 +3,7 @@ from core2d import Vector2
 class TrainerSettings:
 
 
-    THREAD_NUM = 3
+    THREAD_NUM = 8
 
     WORLD_SIZE = 500
     WORLD_DIAG = WORLD_SIZE*1.41421356237
