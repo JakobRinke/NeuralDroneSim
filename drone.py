@@ -13,9 +13,8 @@ class Drone(core2d.physics.PhysicalBody):
                                         (fieldY-TrainerSettings.DRONENUM/2) * TrainerSettings.DRONE_DIST),
                                 TrainerSettings.DRONE_SIZE),
                          color=(255, 0, 0))
-        self.fieldX = fieldX
-        self.fieldY = fieldY
         self.agent = agent
+        self.spos = TrainerSettings.DRONENUM * fieldX + fieldY
 
     def getAliveNeighbourCount(self):
         o = -1
@@ -74,10 +73,9 @@ class Drone(core2d.physics.PhysicalBody):
     def remove_drone_from_swarm(self):
         for item in self.agent.world:
             if isinstance(item ,Drone) and item is not None:
-                if item.fieldX == self.fieldX and item.fieldY == self.fieldY:
+                if item.spos == self.spos  and item.spos == self.spos:
                     self.agent.world.remove(item)
-
-        self.agent.swarm[self.fieldX][self.fieldY] = None
+        self.agent.swarm.remove(self)
 
     def evt_collision(self, other):
         self.remove_drone_from_swarm()
