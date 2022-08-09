@@ -45,13 +45,11 @@ def proccess_net(*args):
             if drw and fitness_save[i] > strogest_fitness:
                 strongest = i
                 strogest_fitness = fitness_save[i]
-        if drw:
-            agents[currently_showing].updateGraphics = False
+        if drw and agents[currently_showing].updateGraphics == False:
             agents[strongest].updateGraphics = True
             currently_showing = strongest
 
     return fitness_save
-
 
 def main(genomes, config):
     global GEN
@@ -74,12 +72,6 @@ def main(genomes, config):
     for Ret in Returns:
         for i in range(len(Ret)):
             ge[i].fitness+=Ret[i]/TrainerSettings.THREAD_NUM
-
-
-
-
-
-
 
 def run_neat(config_path):
     config = neat.config.Config(neat.DefaultGenome, neat.DefaultReproduction, neat.DefaultSpeciesSet, neat.DefaultStagnation, config_path)
