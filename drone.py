@@ -75,7 +75,9 @@ class Drone(core2d.physics.PhysicalBody):
             if isinstance(item ,Drone) and item is not None:
                 if item.spos == self.spos  and item.spos == self.spos:
                     self.agent.world.remove(item)
-        self.agent.swarm.remove(self)
+            for item in self.agent.swarm:
+                if item.spos == self.spos and item.spos == self.spos:
+                    self.agent.swarm.remove(item)
 
     def evt_collision(self, other):
         self.remove_drone_from_swarm()
