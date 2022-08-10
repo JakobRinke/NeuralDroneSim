@@ -20,7 +20,7 @@ class BaseNeatAgent:
         self.activate = activate
         self.objective = objective
         self.updateGraphics = updateGraphics
-
+        self.stored_fitness = 0
 
     def proccess_network(self, deltaTime):
         for drone in self.swarm:
@@ -42,19 +42,14 @@ class BaseNeatAgent:
 
 
 
-    def getFitness(self):
-        fitness = 0
+    def getFitness(self, deltaTime):
         for drone in self.swarm:
-            fitness+=TrainerSettings.WORLD_DIAG-(self.objective - drone.pos).length()
-        return fitness
+            self.stored_fitness+=(TrainerSettings.WORLD_DIAG-(self.objective - drone.pos).length()) * deltaTime / TrainerSettings.WORLD_DIAG
+        return self.stored_fitness
 
 
 
 class DefenceNeatAgent(BaseNeatAgent):
-    def __init__(self, world_base, startPos, v ,activate, updateGraphics=False):
-        super().__init__(world_base, startPos, core2d.Vector2(0,0), activate, updateGraphics)
-        self.stored_fitness = 0
-
     def getFitness(self, deltaTime):
         for _ in self.swarm:
             self.stored_fitness += deltaTime

@@ -26,11 +26,6 @@ class Drone(core2d.physics.PhysicalBody):
 
     # The Output (tilt and speed of the Drone) calculate to real Velocity and set as parameters
     def set_drone_output_params(self, params):
-        """
-        self.velocity = Vector2(params[0] * TrainerSettings.MAX_DRONE_SPEED,
-                                params[1] * math.pi * 2,
-                                rad=True)
-        """
         self.velocity = core2d.Vector2(params[0], params[1]).normalize() * TrainerSettings.MAX_DRONE_SPEED
 
 
@@ -38,7 +33,6 @@ class Drone(core2d.physics.PhysicalBody):
     def get_network_parameters(self):
         params = self.get_inner_parameters()
         """
-        
         for x in range(-1, 2):
             for y in range(-1, 2):
                 if x != 0 or y != 0:

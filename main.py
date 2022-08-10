@@ -24,14 +24,14 @@ def proccess_net(*args):
     drw = args[0][1]
     fitness_save = []
     agents = []
-    world, swarmpos, objective = world_gen.random_defenceworld()
+    world, swarmpos, objective = world_gen.create_base_world()
     draw = True
     currently_showing = 0
     if drw:
         core2d.graphics.init("Training AI")
         core2d.graphics.goal = objective
     for net in nets:
-        agents.append(neat_agent.DefenceNeatAgent(world, swarmpos, objective, net.activate, draw and drw))
+        agents.append(neat_agent.BaseNeatAgent(world, swarmpos, objective, net.activate, draw and drw))
         fitness_save.append(0)
         draw = False
     for i in range(int((TrainerSettings.exec_time/TrainerSettings.update_time))):
@@ -82,11 +82,11 @@ def run_neat(config_path):
     p.add_reporter(neat.StdOutReporter(True))
     stats = neat.StatisticsReporter()
     p.add_reporter(stats)
-    winner = p.run(main, 400)
+    winner = p.run(main, 50)
     print(winner)
     win = p.best_genome
-    pickle.dump(winner, open('winner9.pkl', 'wb'))
-    pickle.dump(win, open('real_winner9.pkl', 'wb'))
+    pickle.dump(winner, open('winner9sss.pkl', 'wb'))
+    pickle.dump(win, open('real_winner9sss.pkl', 'wb'))
 
 
 

@@ -93,9 +93,16 @@ def raycast_line(LineStart, LineDir, start, dir):
     y3 = y1 + LineDir.y
     x4 = x2 + dir.x
     y4 = y2 + dir.y
-    uA = ((x4-x3)*(y1-y3) - (y4-y3)*(x1-x3)) / ((y4-y3)*(x2-x1) - (x4-x3)*(y2-y1))
+    try:
+        uA = ((x4-x3)*(y1-y3) - (y4-y3)*(x1-x3)) / ((y4-y3)*(x2-x1) - (x4-x3)*(y2-y1))
+    except:
+        return math.inf
     if uA >= 0 and uA <= 1:
-        return ((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3)) / ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1))
+        b=  ((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3)) / ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1))
+        if b < 0:
+            return math.inf
+        else:
+            return b
     else:
         return math.inf
 
