@@ -34,14 +34,12 @@ def spheres_collide(s1, s2):
     return (s1.pos-s2.pos).length() <= s1.param2 + s2.param2
 
 def sphere_collide_rect(circle, rect):
-
     circleDistance = abs(circle.pos - rect.pos)
     halfSize = rect.param2/2
     if (circleDistance.x > (halfSize.x + circle.param2)):
         return False
     if circleDistance.y > (halfSize.y + circle.param2):
         return False
-
     if circleDistance.x <= (halfSize.x):
         return True
     if circleDistance.y <= (halfSize.y):
@@ -71,9 +69,9 @@ def raycast_sphere(cyc, start, dir, in_bounds_break=True):
     dir = dir.normalize()
     dx = start.x - cyc.pos.x
     dy = cyc.pos.y - start.y
-    a = - dir.x**2 - dir.y**2
+    a = - dir.x*dir.x - dir.y*dir.y
     b = 2 * (-dir.x*dx+dir.y*dy)
-    c = -dx**2-dy**2 + cyc.param2**2
+    c = -dx*dx-dy*dy + cyc.param2*cyc.param2
     try:
         l = min((-b+math.sqrt(b*b-4*a*c))/(2*a), \
                    (-b-math.sqrt(b*b-4*a*c))/(2*a) )
@@ -84,25 +82,29 @@ def raycast_sphere(cyc, start, dir, in_bounds_break=True):
     except:
         return math.inf
 
+
 def raycast_line(LineStart, LineDir, start, dir):
     dir = dir.normalize()
-    d = LineStart-start
+    x1 = LineStart.x
+    y1 = LineStart.y
+    x2 = start.x
+    y2 = start.y
+    x3 = x1 + LineDir.x
+    y3 = y1 + LineDir.y
+    x4 = x2 + dir.x
+    y4 = y2 + dir.y
     try:
-        r = (dir.y*d.x - dir.x*d.y) / (LineDir.y*dir.x-LineDir.x*dir.y)
+        uA = ((x4-x3)*(y1-y3) - (y4-y3)*(x1-x3)) / ((y4-y3)*(x2-x1) - (x4-x3)*(y2-y1))
     except:
         return math.inf
-    if 0 > r or r > 1:
-        return math.inf
-    try:
-        t = (d.x + r * LineDir.x)/dir.x
-    except:
-        try:
-            t = (d.y + r * LineDir.y) / dir.y
-        except:
+    if uA >= 0 and uA <= 1:
+        b=  ((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3)) / ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1))
+        if b < 0:
             return math.inf
-    if t < 0:
+        else:
+            return b
+    else:
         return math.inf
-    return t
 
 
 def raycast_rect(rect, start, dir, in_bounds_break=True):

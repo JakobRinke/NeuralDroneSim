@@ -13,7 +13,6 @@ class PhysicalBody(core2d.Shape2):
         super().__init__(Shape.pos, Shape.param2, Shape.type)
         self.target = core2d.Vector2(240,-240)
         self.velocity = core2d.Vector2(0, 0)
-        distanceNeighbour = core2d.Vector2(0,0)
         self.color = color
 
     def moveAsTest(self, direction):
