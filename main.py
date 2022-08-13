@@ -45,7 +45,8 @@ def proccess_net(*args):
             if drw and fitness_save[i] > strogest_fitness:
                 strongest = i
                 strogest_fitness = fitness_save[i]
-        if drw and agents[currently_showing].updateGraphics == False:
+        if drw:
+            agents[currently_showing].updateGraphics = False
             agents[strongest].updateGraphics = True
             currently_showing = strongest
 
