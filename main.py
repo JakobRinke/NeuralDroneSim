@@ -14,22 +14,18 @@ neat_agent.physics = core2d.physics
 neat_agent.draw = core2d.graphics
 GEN = 0
 
-
-
-
-
-
 def proccess_net(*args):
     nets = args[0][0]
     drw = args[0][1]
     fitness_save = []
     agents = []
     world, swarmpos, objective = world_gen.create_base_world()
-    draw = True
+    draw = True #True
     currently_showing = 0
     if drw:
         core2d.graphics.init("Training AI")
         core2d.graphics.goal = objective
+
     for net in nets:
         agents.append(neat_agent.BaseNeatAgent(world, swarmpos, objective, net.activate, draw and drw))
         fitness_save.append(0)
@@ -45,6 +41,8 @@ def proccess_net(*args):
             if drw and fitness_save[i] > strogest_fitness:
                 strongest = i
                 strogest_fitness = fitness_save[i]
+        #agents[strongest].proccess_network(delta_time)
+
         if drw:
             agents[currently_showing].updateGraphics = False
             agents[strongest].updateGraphics = True
@@ -53,6 +51,7 @@ def proccess_net(*args):
     return fitness_save
 
 def main(genomes, config):
+
     global GEN
     GEN += 1
     nets = []
@@ -68,6 +67,7 @@ def main(genomes, config):
         ThreadArgs.append((nets, False))
 
     with Pool(len(ThreadArgs)) as pool:
+        print(pool)
         Returns = pool.map(proccess_net, ThreadArgs)
 
     for Ret in Returns:
@@ -87,8 +87,6 @@ def run_neat(config_path):
     win = p.best_genome
     pickle.dump(winner, open('winner4sss.pkl', 'wb'))
     pickle.dump(win, open('real_winner4sss.pkl', 'wb'))
-
-
 
 if __name__ == '__main__':
     local_dir = os.path.dirname(__file__)

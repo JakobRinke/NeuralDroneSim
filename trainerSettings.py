@@ -2,8 +2,7 @@ from core2d import Vector2
 
 class TrainerSettings:
 
-
-    THREAD_NUM = 1
+    THREAD_NUM = 3
 
     WORLD_SIZE = 500
     WORLD_DIAG = WORLD_SIZE*1.41421356237
@@ -13,7 +12,6 @@ class TrainerSettings:
     OBJ_SPEED = 15
 
     DRONENUM = 2
-
 
     MAX_DRONE_SPEED = 20  # Maximum speed of a drone
     DRONE_SIZE = 10       # number represents pixels ( Diameter)
