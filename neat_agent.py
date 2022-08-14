@@ -44,7 +44,7 @@ class BaseNeatAgent:
 
     def getFitness(self, deltaTime):
         for drone in self.swarm:
-            self.stored_fitness+=(TrainerSettings.WORLD_DIAG-(self.objective - drone.pos).length()) * deltaTime / TrainerSettings.WORLD_DIAG
+            self.stored_fitness+= deltaTime * (TrainerSettings.WORLD_DIAG-(self.objective - drone.pos).length()) / TrainerSettings.WORLD_DIAG
         return self.stored_fitness
 
 
