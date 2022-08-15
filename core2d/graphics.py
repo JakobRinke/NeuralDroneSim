@@ -22,6 +22,11 @@ def init(T, raycast_color=(0,255,0)):
     pygame.display.set_caption(T)
 
 def update():
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            raise SystemExit
+
     global width
     global height
     global physics_world
