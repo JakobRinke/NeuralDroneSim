@@ -82,7 +82,7 @@ def run_neat(config_path):
     p.add_reporter(neat.StdOutReporter(True))
     stats = neat.StatisticsReporter()
     p.add_reporter(stats)
-    winner = p.run(main, 400)
+    winner = p.run(main, 50)
     print(winner)
     win = p.best_genome
     pickle.dump(winner, open('winner4sss.pkl', 'wb'))

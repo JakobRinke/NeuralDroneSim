@@ -7,7 +7,7 @@ from trainerSettings import TrainerSettings
 
 class Drone(core2d.physics.PhysicalBody):
 
-    def __init__(self, swarmStartPos, fieldX, fieldY, agent):
+    def __init__(self, swarmStartPos, fieldX, fieldY, agent, id=0):
         super().__init__(core2d.Circle(swarmStartPos +
                                 core2d.Vector2((fieldX-TrainerSettings.DRONENUM/2) * TrainerSettings.DRONE_DIST,
                                         (fieldY-TrainerSettings.DRONENUM/2) * TrainerSettings.DRONE_DIST),
@@ -15,6 +15,7 @@ class Drone(core2d.physics.PhysicalBody):
                          color=(255, 0, 0))
         self.agent = agent
         self.spos = TrainerSettings.DRONENUM * fieldX + fieldY
+        self.id = id
 
     def getAliveNeighbourCount(self):
         o = -1

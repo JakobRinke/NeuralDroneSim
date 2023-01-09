@@ -1,4 +1,5 @@
 import copy
+import math
 from drone import Drone
 import core2d
 physics = ()
@@ -15,12 +16,15 @@ class BaseNeatAgent:
         self.swarm = []
         for i in range(TrainerSettings.DRONENUM):
             for j in range(TrainerSettings.DRONENUM):
-                self.swarm.append(Drone(startPos, i, j, self))
+                self.swarm.append(Drone(startPos, i, j, self, i*TrainerSettings.DRONENUM+j))
                 self.world.append(self.swarm[i*TrainerSettings.DRONENUM+j])
         self.activate = activate
         self.objective = objective
         self.updateGraphics = updateGraphics
-        self.stored_fitness = 0
+        self.stored_fitness = []
+        for i in range(TrainerSettings.DRONENUM**2):
+            self.stored_fitness.append(0)
+
 
     def proccess_network(self, deltaTime):
         for drone in self.swarm:
@@ -41,11 +45,14 @@ class BaseNeatAgent:
                 draw.raycasts.append((drone.pos, TrainerSettings.RAYCASTS_DRONE[i].normalize(), cast))
 
 
-
-    def getFitness(self, deltaTime):
+    def getFitness(self, dTime):
+        fitness = 0
         for drone in self.swarm:
-            self.stored_fitness+= deltaTime * (TrainerSettings.WORLD_DIAG-(self.objective - drone.pos).length()) / TrainerSettings.WORLD_DIAG
-        return self.stored_fitness
+            f = (TrainerSettings.WORLD_DIAG-(self.objective - drone.pos).length() / TrainerSettings.WORLD_DIAG)**2/10000
+            fitness += f
+            self.stored_fitness[drone.id] = max(self.stored_fitness[drone.id], f)
+        fitness += sum(self.stored_fitness) * 2 + fitness
+        return fitness
 
 
 
